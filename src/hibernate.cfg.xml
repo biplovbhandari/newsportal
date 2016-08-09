@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		
+		<!--  Database Connection Settings -->
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/newsportal</property>		
+		<property name="hibernate.connection.username">sahana</property>
+		<property name="hibernate.connection.password">sahana</property>
+		
+		<!--  SQL Dialect -->
+		<!-- <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property> -->
+		<property name="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</property>
+
+		<!-- Disable the second level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+		<!-- Echo all executed SQL to stdout -->
+		<property name="hibernate.show_sql">true</property>
+		<!-- Format pretty sql -->
+		<!-- <property name="format_sql">true</property> -->
+		<!-- Show comments in the formatted SQL -->
+		<!-- <property name="use_sql_comments">true</property> -->
+
+		<!-- continue on the created database on startup -->
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<!-- validate - update - create - create-drop -->
+
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+
+		<property name="hibernate.connection.autocommit">true</property>
+
+		<!-- Names the annotated entity class -->
+		<mapping class="com.newsportal.model.bean.AuthUser" />
+		<mapping class="com.newsportal.model.bean.UserProfile" />
+		<mapping class="com.newsportal.model.bean.AuthRole" />
+		<mapping class="com.newsportal.model.bean.AuthEvent" />
+		<mapping class="com.newsportal.model.bean.NewsCategory" />
+		<mapping class="com.newsportal.model.bean.NewsPost" />
+		<mapping class="com.newsportal.model.bean.NewsComment" />
+		<mapping class="com.newsportal.model.bean.NewsTag" />
+		<mapping class="com.newsportal.model.bean.DocImage" />
+		<mapping class="com.newsportal.model.bean.DocDocument" />
+		<mapping class="com.newsportal.model.bean.UserSubscriptionFilter" />
+		<mapping class="com.newsportal.model.bean.UserSubscription" />
+		<mapping class="com.newsportal.model.bean.UserSubscriptionResource" />
+		
+	</session-factory>
+</hibernate-configuration>

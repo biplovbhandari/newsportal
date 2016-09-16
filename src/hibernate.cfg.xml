@@ -33,9 +33,10 @@
 		<property name="hibernate.connection.autocommit">true</property>
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.newsportal.model.bean.AuthUser" />
-		<mapping class="com.newsportal.model.bean.UserProfile" />
 		<mapping class="com.newsportal.model.bean.AuthRole" />
+		<mapping class="com.newsportal.model.bean.AuthPermission" />
+		<mapping class="com.newsportal.model.bean.AuthUser" />
+		<mapping class="com.newsportal.model.bean.AuthRelation" />
 		<mapping class="com.newsportal.model.bean.AuthEvent" />
 		<mapping class="com.newsportal.model.bean.NewsCategory" />
 		<mapping class="com.newsportal.model.bean.NewsPost" />
@@ -43,6 +44,7 @@
 		<mapping class="com.newsportal.model.bean.NewsTag" />
 		<mapping class="com.newsportal.model.bean.DocImage" />
 		<mapping class="com.newsportal.model.bean.DocDocument" />
+		<mapping class="com.newsportal.model.bean.UserProfile" />
 		<mapping class="com.newsportal.model.bean.UserSubscriptionFilter" />
 		<mapping class="com.newsportal.model.bean.UserSubscription" />
 		<mapping class="com.newsportal.model.bean.UserSubscriptionResource" />

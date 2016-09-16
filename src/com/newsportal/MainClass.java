@@ -80,25 +80,27 @@ public class MainClass {
 		Set<AuthRole> roleSet2 = new LinkedHashSet<AuthRole>();
 		roleSet2.add(authRole2);
 
-		authUser1.setAuthRole(roleSet1);
-		authUser2.setAuthRole(roleSet2);
+		//authUser1.setAuthRole(roleSet1);
+		//authUser2.setAuthRole(roleSet2);
 		
+		@SuppressWarnings("unused")
 		AuthPermission authPermission1 = new AuthPermission();
-		authPermission1.setResource("news_post");
-		authPermission1.setCreatePermission(true);
-		authPermission1.setReadPermission(true);
-		authPermission1.setUpdatePermission(true);
-		authPermission1.setDeletePermission(true);
+		//authPermission1.setResource("news_post");
+		//authPermission1.setCreatePermission(true);
+		//authPermission1.setReadPermission(true);
+		//authPermission1.setUpdatePermission(true);
+		//authPermission1.setDeletePermission(true);
 
+		@SuppressWarnings("unused")
 		AuthPermission authPermission2 = new AuthPermission();
-		authPermission2.setResource("news_post");
-		authPermission2.setCreatePermission(true);
-		authPermission2.setReadPermission(true);
-		authPermission2.setUpdatePermission(true);
-		authPermission2.setDeletePermission(true);
+		//authPermission2.setResource("news_post");
+		//authPermission2.setCreatePermission(true);
+		//authPermission2.setReadPermission(true);
+		//authPermission2.setUpdatePermission(true);
+		//authPermission2.setDeletePermission(true);
 		
-		authRole1.setAuthPermission(authPermission1);
-		authRole2.setAuthPermission(authPermission2);
+		//authRole1.setAuthPermission(authPermission1);
+		//authRole2.setAuthPermission(authPermission2);
 		
 		NewsCategory newsCategory = new NewsCategory();
 		newsCategory.setName("Sports");

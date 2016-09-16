@@ -1,11 +1,11 @@
 package com.newsportal.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,7 +20,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "auth_role")
-public class AuthRole {
+public class AuthRole implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -52,9 +54,6 @@ public class AuthRole {
 	@Column(name="description", columnDefinition="TEXT")
 	private String description;
 	
-	@Embedded
-	private AuthPermission authPermission;
-	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
 
@@ -77,6 +76,19 @@ public class AuthRole {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
+	
+	/**
+	 * Constructors
+	 */
+	public AuthRole() {
+		
+	}
+	
+	public AuthRole(String UUID, String role) {
+		
+		this.uuid = UUID;
+		this.role = role;
+	}
 
 	/**
 	 * @return the createdBy
@@ -287,20 +299,5 @@ public class AuthRole {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-
-	/**
-	 * @return the authPermission
-	 */
-	public AuthPermission getAuthPermission() {
-		return authPermission;
-	}
-
-	/**
-	 * @param authPermission the authPermission to set
-	 */
-	public void setAuthPermission(AuthPermission authPermission) {
-		this.authPermission = authPermission;
-	}
-	
 	
 }

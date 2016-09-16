@@ -1,5 +1,6 @@
 package com.newsportal.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,14 +19,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.utils.Utils;
+
 @Entity
 @Table(name = "auth_event")
-public class AuthEvent {
+public class AuthEvent implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
@@ -43,6 +45,10 @@ public class AuthEvent {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private AuthUser userId;
 	
 	@Column(name="time_stamp")
 	private Date timeStamp = new Date();
@@ -82,6 +88,21 @@ public class AuthEvent {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
 
+	/**
+	 * Constructors
+	 */
+	public AuthEvent() {
+		
+	}
+	
+	public AuthEvent(AuthUser authUser, String clientIp, String description) {
+		
+		this.userId = authUser;
+		this.clientIp = clientIp;
+		this.description = Utils.getFullName(authUser) + description;
+		this.timeStamp = new Date();
+	}
+	
 	/**
 	 * @return the userId
 	 */

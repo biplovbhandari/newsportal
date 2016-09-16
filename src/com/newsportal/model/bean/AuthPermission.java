@@ -1,93 +1,205 @@
 package com.newsportal.model.bean;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Embeddable
-public class AuthPermission {
+@Entity
+@Table(name = "auth_permission")
+public class AuthPermission implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	// Relationships Column
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="created_by")
+	private AuthUser createdBy;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="approved_by")
+	private AuthUser approvedBy;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="modified_by")
+	private AuthUser modifiedBy;
+
 	// Fields
-	@Column(name="resource", length=16)
-	private String resource;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="role_id")
+	private AuthRole roleId;
+
+	@Column(name= "module_name", length=16)
+	private String moduleName;
+
+	@Column(name="table_name", length=16)
+	private String tableName;
 	
-	@Column(name="create_permission")
-	private boolean createPermission;
+	// Owner Permission should be something like this:
+	// "CREATE, READ, UPDATE, DELETE, APPROVE, PUBLISH"
+	@Column(name="owner_permission")
+	private String ownerPermission;
+
+	@Column(name="user_permission")
+	private String userPermission;
 	
-	@Column(name="read_permission")
-	private boolean readPermission;
+	/**
+	 * Constructors
+	 */
+	public AuthPermission() {
+		
+	}
 	
-	@Column(name="update_permission")
-	private boolean updatePermission;
+	public AuthPermission(String moduleName, String ownerPermission, String userPermission, AuthRole roleId) {
+		
+		this.moduleName = moduleName;
+		this.ownerPermission = ownerPermission;
+		this.userPermission = userPermission;
+		this.roleId = roleId;
+	}
 	
-	@Column(name="delete_permission")
-	private boolean deletePermission;
-
 	/**
-	 * @return the resource
+	 * @return the createdBy
 	 */
-	public String getResource() {
-		return resource;
+	public AuthUser getCreatedBy() {
+		return createdBy;
 	}
 
 	/**
-	 * @param resource the resource to set
+	 * @param createdBy the createdBy to set
 	 */
-	public void setResource(String resource) {
-		this.resource = resource;
+	public void setCreatedBy(AuthUser createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	/**
-	 * @return the createPermission
+	 * @return the approvedBy
 	 */
-	public boolean isCreatePermission() {
-		return createPermission;
+	public AuthUser getApprovedBy() {
+		return approvedBy;
 	}
 
 	/**
-	 * @param createPermission the createPermission to set
+	 * @param approvedBy the approvedBy to set
 	 */
-	public void setCreatePermission(boolean createPermission) {
-		this.createPermission = createPermission;
+	public void setApprovedBy(AuthUser approvedBy) {
+		this.approvedBy = approvedBy;
 	}
 
 	/**
-	 * @return the readPermission
+	 * @return the modifiedBy
 	 */
-	public boolean isReadPermission() {
-		return readPermission;
+	public AuthUser getModifiedBy() {
+		return modifiedBy;
 	}
 
 	/**
-	 * @param readPermission the readPermission to set
+	 * @param modifiedBy the modifiedBy to set
 	 */
-	public void setReadPermission(boolean readPermission) {
-		this.readPermission = readPermission;
+	public void setModifiedBy(AuthUser modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 
 	/**
-	 * @return the updatePermission
+	 * @return the id
 	 */
-	public boolean isUpdatePermission() {
-		return updatePermission;
+	public Long getId() {
+		return id;
 	}
 
 	/**
-	 * @param updatePermission the updatePermission to set
+	 * @param id the id to set
 	 */
-	public void setUpdatePermission(boolean updatePermission) {
-		this.updatePermission = updatePermission;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	/**
-	 * @return the deletePermission
+	 * @return the serialversionuid
 	 */
-	public boolean isDeletePermission() {
-		return deletePermission;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	/**
-	 * @param deletePermission the deletePermission to set
+	 * @return the roleId
 	 */
-	public void setDeletePermission(boolean deletePermission) {
-		this.deletePermission = deletePermission;
+	public AuthRole getRoleId() {
+		return roleId;
 	}
+
+	/**
+	 * @param roleId the roleId to set
+	 */
+	public void setRoleId(AuthRole roleId) {
+		this.roleId = roleId;
+	}
+
+	/**
+	 * @return the moduleName
+	 */
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	/**
+	 * @param moduleName the moduleName to set
+	 */
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	/**
+	 * @return the tableName
+	 */
+	public String getTableName() {
+		return tableName;
+	}
+
+	/**
+	 * @param tableName the tableName to set
+	 */
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
+	/**
+	 * @return the ownerPermission
+	 */
+	public String getOwnerPermission() {
+		return ownerPermission;
+	}
+
+	/**
+	 * @param ownerPermission the ownerPermission to set
+	 */
+	public void setOwnerPermission(String ownerPermission) {
+		this.ownerPermission = ownerPermission;
+	}
+
+	/**
+	 * @return the userPermission
+	 */
+	public String getUserPermission() {
+		return userPermission;
+	}
+
+	/**
+	 * @param userPermission the userPermission to set
+	 */
+	public void setUserPermission(String userPermission) {
+		this.userPermission = userPermission;
+	}
+	
 }

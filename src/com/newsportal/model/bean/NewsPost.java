@@ -1,5 +1,6 @@
 package com.newsportal.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -24,7 +25,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "news_post")
-public class NewsPost {
+public class NewsPost implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	// Relationships Column
 	@ManyToOne

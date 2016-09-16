@@ -1,5 +1,6 @@
 package com.newsportal.model.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,8 +22,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "user_subscription_resource")
-public class UserSubscriptionResource {
+public class UserSubscriptionResource implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	// Relationships Column
 
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="resourceId")

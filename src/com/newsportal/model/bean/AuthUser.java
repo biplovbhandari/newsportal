@@ -15,7 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,11 +30,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "auth_user")
-public class AuthUser implements Serializable{
+public class AuthUser implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	// Relationships Columns	
+	// Relationships Columns
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="profile_id")
 	private UserProfile profileId;
@@ -46,13 +45,6 @@ public class AuthUser implements Serializable{
 			   inverseJoinColumns = { @JoinColumn(name = "post_id", nullable = false, updatable = false) })
 	@OrderBy("id")
 	private Set<NewsPost> newsPost = new LinkedHashSet<NewsPost>();
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role",
-			   joinColumns = { @JoinColumn(name = "user_id", nullable = false, updatable = false) },
-			   inverseJoinColumns = { @JoinColumn(name = "role_id", nullable = false, updatable = false) })
-	@OrderBy("id")
-	private Set<AuthRole> authRole = new LinkedHashSet<AuthRole>();
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
 	private Set<AuthEvent> authEvent = new LinkedHashSet<AuthEvent>();
@@ -157,6 +149,31 @@ public class AuthUser implements Serializable{
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
+	
+	/**
+	 * Constructors
+	 */
+	
+	public AuthUser() {
+	}
+	
+	public AuthUser(Long id) {
+		this.id = id;
+	}
+	
+	public AuthUser(String id) {
+		this.id = Long.valueOf(id);
+	}
+
+	public AuthUser(String firstName, String lastName,
+			String userName, String password, String email) {
+		
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = userName;
+		this.password = password;
+		this.email = email;
+	}
 	
 	/** Getters and Setters**/
 
@@ -372,7 +389,7 @@ public class AuthUser implements Serializable{
 	/**
 	 * @return the locked
 	 */
-	public Boolean getLocked() {
+	public Boolean isLocked() {
 		return locked;
 	}
 
@@ -386,7 +403,7 @@ public class AuthUser implements Serializable{
 	/**
 	 * @return the disabled
 	 */
-	public Boolean getDisabled() {
+	public Boolean isDisabled() {
 		return disabled;
 	}
 
@@ -577,20 +594,6 @@ public class AuthUser implements Serializable{
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the authRole
-	 */
-	public Set<AuthRole> getAuthRole() {
-		return authRole;
-	}
-
-	/**
-	 * @param authRole the authRole to set
-	 */
-	public void setAuthRole(Set<AuthRole> authRole) {
-		this.authRole = authRole;
 	}
 
 	/**

@@ -15,12 +15,12 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.newsportal.utils.LoginInfo;
-import com.newsportal.model.bean.auth.AuthEvent;
-import com.newsportal.model.bean.auth.AuthRole;
-import com.newsportal.model.bean.auth.AuthUser;
-import com.newsportal.model.services.AuthEventService;
-import com.newsportal.model.services.AuthRoleService;
-import com.newsportal.model.services.AuthUserService;
+import com.newsportal.model.auth.AuthEvent;
+import com.newsportal.model.auth.AuthRole;
+import com.newsportal.model.auth.AuthUser;
+import com.newsportal.controllers.services.AuthEventService;
+import com.newsportal.controllers.services.AuthRoleService;
+import com.newsportal.controllers.services.AuthUserService;
 import com.newsportal.utils.LoginRequest;
 import com.newsportal.utils.Utils;
 

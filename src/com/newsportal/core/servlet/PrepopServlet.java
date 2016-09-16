@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.newsportal.model.bean.auth.AuthPermission;
-import com.newsportal.model.bean.auth.AuthRelation;
-import com.newsportal.model.bean.auth.AuthRole;
-import com.newsportal.model.bean.auth.AuthUser;
-import com.newsportal.model.services.AuthPermissionService;
-import com.newsportal.model.services.AuthRelationService;
-import com.newsportal.model.services.AuthRoleService;
-import com.newsportal.model.services.AuthUserService;
+import com.newsportal.model.auth.AuthPermission;
+import com.newsportal.model.auth.AuthRelation;
+import com.newsportal.model.auth.AuthRole;
+import com.newsportal.model.auth.AuthUser;
+import com.newsportal.controllers.services.AuthPermissionService;
+import com.newsportal.controllers.services.AuthRelationService;
+import com.newsportal.controllers.services.AuthRoleService;
+import com.newsportal.controllers.services.AuthUserService;
 import com.newsportal.utils.Utils;
 
 public class PrepopServlet extends HttpServlet{

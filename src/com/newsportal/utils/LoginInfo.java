@@ -2,7 +2,7 @@ package com.newsportal.utils;
 
 import java.util.List;
 
-import com.newsportal.model.bean.auth.AuthRole;
+import com.newsportal.model.auth.AuthRole;
 
 public class LoginInfo {
 

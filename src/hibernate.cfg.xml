@@ -33,21 +33,21 @@
 		<property name="hibernate.connection.autocommit">true</property>
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.newsportal.model.bean.auth.AuthRole" />
-		<mapping class="com.newsportal.model.bean.auth.AuthPermission" />
-		<mapping class="com.newsportal.model.bean.auth.AuthUser" />
-		<mapping class="com.newsportal.model.bean.auth.AuthRelation" />
-		<mapping class="com.newsportal.model.bean.auth.AuthEvent" />
-		<mapping class="com.newsportal.model.bean.doc.DocImage" />
-		<mapping class="com.newsportal.model.bean.doc.DocDocument" />
-		<mapping class="com.newsportal.model.bean.news.NewsCategory" />
-		<mapping class="com.newsportal.model.bean.news.NewsPost" />
-		<mapping class="com.newsportal.model.bean.news.NewsComment" />
-		<mapping class="com.newsportal.model.bean.news.NewsTag" />
-		<mapping class="com.newsportal.model.bean.person.PersonProfile" />
-		<mapping class="com.newsportal.model.bean.person.PersonSubscriptionFilter" />
-		<mapping class="com.newsportal.model.bean.person.PersonSubscription" />
-		<mapping class="com.newsportal.model.bean.person.PersonSubscriptionResource" />
+		<mapping class="com.newsportal.model.auth.AuthRole" />
+		<mapping class="com.newsportal.model.auth.AuthPermission" />
+		<mapping class="com.newsportal.model.auth.AuthUser" />
+		<mapping class="com.newsportal.model.auth.AuthRelation" />
+		<mapping class="com.newsportal.model.auth.AuthEvent" />
+		<mapping class="com.newsportal.model.doc.DocImage" />
+		<mapping class="com.newsportal.model.doc.DocDocument" />
+		<mapping class="com.newsportal.model.news.NewsCategory" />
+		<mapping class="com.newsportal.model.news.NewsPost" />
+		<mapping class="com.newsportal.model.news.NewsComment" />
+		<mapping class="com.newsportal.model.news.NewsTag" />
+		<mapping class="com.newsportal.model.person.PersonProfile" />
+		<mapping class="com.newsportal.model.person.PersonSubscriptionFilter" />
+		<mapping class="com.newsportal.model.person.PersonSubscription" />
+		<mapping class="com.newsportal.model.person.PersonSubscriptionResource" />
 		
 	</session-factory>
 </hibernate-configuration>

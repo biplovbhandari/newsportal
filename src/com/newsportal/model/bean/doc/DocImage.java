@@ -1,9 +1,10 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.doc;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,14 +15,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.news.NewsComment;
+
 @Entity
-@Table(name = "auth_role")
-public class AuthRole implements Serializable {
-	
+@Table(name = "doc_image")
+public class DocImage implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
@@ -41,18 +46,35 @@ public class AuthRole implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name="uuid", length=64)
-	private String uuid;
 	
-	@Column(name="hidden")
-	private Boolean hidden=false;
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private AuthUser userId;
 	
-	@Column(name="role")
-	private String role;
+	@OneToOne
+	@JoinColumn(name="comment_id")
+	private NewsComment commentId;
 	
-	@Column(name="description", columnDefinition="TEXT")
-	private String description;
+	@Column(name="file")
+	private String file;
+	
+	@Column(name="file_size")
+	private String file_size;
+	
+	@Column(name="mime_type")
+	private String mime_type;
+	
+	@Column(name="name", length=128)
+	private String name;
+	
+	@Column(name="date")
+	private Date date;
+	
+	@Column(name="checksum", length=512)
+	private String checksum;
+	
+	@Column(name="comments", columnDefinition="TEXT")
+	private String comments;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
@@ -62,6 +84,9 @@ public class AuthRole implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
 	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
+	
+	@Column(name = "uuid", unique = true)
+	private String uuid = UUID.randomUUID().toString();
 	
 	@Column(name="deleted")
 	private Boolean deleted = false;
@@ -76,19 +101,6 @@ public class AuthRole implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
-	
-	/**
-	 * Constructors
-	 */
-	public AuthRole() {
-		
-	}
-	
-	public AuthRole(String UUID, String role) {
-		
-		this.uuid = UUID;
-		this.role = role;
-	}
 
 	/**
 	 * @return the createdBy
@@ -147,45 +159,129 @@ public class AuthRole implements Serializable {
 	}
 
 	/**
-	 * @return the hidden
+	 * @return the userId
 	 */
-	public Boolean getHidden() {
-		return hidden;
+	public AuthUser getUserId() {
+		return userId;
 	}
 
 	/**
-	 * @param hidden the hidden to set
+	 * @param userId the userId to set
 	 */
-	public void setHidden(Boolean hidden) {
-		this.hidden = hidden;
+	public void setUserId(AuthUser userId) {
+		this.userId = userId;
 	}
 
 	/**
-	 * @return the role
+	 * @return the commentId
 	 */
-	public String getRole() {
-		return role;
+	public NewsComment getCommentId() {
+		return commentId;
 	}
 
 	/**
-	 * @param role the role to set
+	 * @param commentId the commentId to set
 	 */
-	public void setRole(String role) {
-		this.role = role;
+	public void setCommentId(NewsComment commentId) {
+		this.commentId = commentId;
 	}
 
 	/**
-	 * @return the description
+	 * @return the file
 	 */
-	public String getDescription() {
-		return description;
+	public String getFile() {
+		return file;
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param file the file to set
 	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	/**
+	 * @return the file_size
+	 */
+	public String getFile_size() {
+		return file_size;
+	}
+
+	/**
+	 * @param file_size the file_size to set
+	 */
+	public void setFile_size(String file_size) {
+		this.file_size = file_size;
+	}
+
+	/**
+	 * @return the mime_type
+	 */
+	public String getMime_type() {
+		return mime_type;
+	}
+
+	/**
+	 * @param mime_type the mime_type to set
+	 */
+	public void setMime_type(String mime_type) {
+		this.mime_type = mime_type;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * @return the checksum
+	 */
+	public String getChecksum() {
+		return checksum;
+	}
+
+	/**
+	 * @param checksum the checksum to set
+	 */
+	public void setChecksum(String checksum) {
+		this.checksum = checksum;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	/**
@@ -228,6 +324,20 @@ public class AuthRole implements Serializable {
 	 */
 	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
 		this.modifiedByUsers = modifiedByUsers;
+	}
+
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	/**
@@ -285,19 +395,4 @@ public class AuthRole implements Serializable {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
 }

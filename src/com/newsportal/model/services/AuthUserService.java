@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.newsportal.model.bean.AuthUser;
+import com.newsportal.model.bean.auth.AuthUser;
 import com.newsportal.model.dao.AuthUserDAO;
 import com.newsportal.utils.SessionBuilder;
 

@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.person;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,17 +15,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-@Table(name = "doc_document")
-public class DocDocument implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+import com.newsportal.model.bean.auth.AuthUser;
 
+@Entity
+@Table(name = "person_profile")
+public class PersonProfile implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	// Relationships Column
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
@@ -43,38 +44,18 @@ public class DocDocument implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name="dob")
+	private Date dob;
+
+	@Column(name="gender", length=16)
+	private String gender;
+
+	@Column(name="contact_method", length=32)
+	private String contactMethod;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-	
-	@OneToOne
-	@JoinColumn(name="comment_id")
-	private NewsComment commentId;
-	
-	@Column(name="file")
-	private String file;
-	
-	@Column(name="file_size")
-	private String file_size;
-	
-	@Column(name="mime_type")
-	private String mime_type;
-	
-	@Column(name="has_been_indexed")
-	private Boolean hasBeenIndexed = false;
-	
-	@Column(name="name", length=128)
-	private String name;
-	
-	@Column(name="date")
-	private Date date;
-	
-	@Column(name="checksum", length=512)
-	private String checksum;
-	
-	@Column(name="comments", columnDefinition="TEXT")
-	private String comments;
+	@Column(name="contact_value", length=512)
+	private String contactValue;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
@@ -101,8 +82,6 @@ public class DocDocument implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
-	
-	/** Getters and Setters **/
 
 	/**
 	 * @return the createdBy
@@ -161,129 +140,59 @@ public class DocDocument implements Serializable {
 	}
 
 	/**
-	 * @return the userId
+	 * @return the dob
 	 */
-	public AuthUser getUserId() {
-		return userId;
+	public Date getDob() {
+		return dob;
 	}
 
 	/**
-	 * @param userId the userId to set
+	 * @param dob the dob to set
 	 */
-	public void setUserId(AuthUser userId) {
-		this.userId = userId;
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
 	/**
-	 * @return the commentId
+	 * @return the gender
 	 */
-	public NewsComment getCommentId() {
-		return commentId;
+	public String getGender() {
+		return gender;
 	}
 
 	/**
-	 * @param commentId the commentId to set
+	 * @param gender the gender to set
 	 */
-	public void setCommentId(NewsComment commentId) {
-		this.commentId = commentId;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	/**
-	 * @return the file
+	 * @return the contactMethod
 	 */
-	public String getFile() {
-		return file;
+	public String getContactMethod() {
+		return contactMethod;
 	}
 
 	/**
-	 * @param file the file to set
+	 * @param contactMethod the contactMethod to set
 	 */
-	public void setFile(String file) {
-		this.file = file;
+	public void setContactMethod(String contactMethod) {
+		this.contactMethod = contactMethod;
 	}
 
 	/**
-	 * @return the file_size
+	 * @return the contactValue
 	 */
-	public String getFile_size() {
-		return file_size;
+	public String getContactValue() {
+		return contactValue;
 	}
 
 	/**
-	 * @param file_size the file_size to set
+	 * @param contactValue the contactValue to set
 	 */
-	public void setFile_size(String file_size) {
-		this.file_size = file_size;
-	}
-
-	/**
-	 * @return the mime_type
-	 */
-	public String getMime_type() {
-		return mime_type;
-	}
-
-	/**
-	 * @param mime_type the mime_type to set
-	 */
-	public void setMime_type(String mime_type) {
-		this.mime_type = mime_type;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * @return the checksum
-	 */
-	public String getChecksum() {
-		return checksum;
-	}
-
-	/**
-	 * @param checksum the checksum to set
-	 */
-	public void setChecksum(String checksum) {
-		this.checksum = checksum;
-	}
-
-	/**
-	 * @return the comments
-	 */
-	public String getComments() {
-		return comments;
-	}
-
-	/**
-	 * @param comments the comments to set
-	 */
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setContactValue(String contactValue) {
+		this.contactValue = contactValue;
 	}
 
 	/**
@@ -396,19 +305,5 @@ public class DocDocument implements Serializable {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the hasBeenIndexed
-	 */
-	public Boolean getHasBeenIndexed() {
-		return hasBeenIndexed;
-	}
-
-	/**
-	 * @param hasBeenIndexed the hasBeenIndexed to set
-	 */
-	public void setHasBeenIndexed(Boolean hasBeenIndexed) {
-		this.hasBeenIndexed = hasBeenIndexed;
 	}
 }

@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.person;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,16 +20,19 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.person.PersonSubscription;
+
 @Entity
-@Table(name = "user_subscription_resource")
-public class UserSubscriptionResource implements Serializable {
+@Table(name = "person_subscription_resource")
+public class PersonSubscriptionResource implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
 
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="resourceId")
-	private UserSubscription userSubscription;
+	private PersonSubscription userSubscription;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
@@ -82,8 +85,20 @@ public class UserSubscriptionResource implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
-	
-	/** Getters and Setters **/
+
+	/**
+	 * @return the userSubscription
+	 */
+	public PersonSubscription getUserSubscription() {
+		return userSubscription;
+	}
+
+	/**
+	 * @param userSubscription the userSubscription to set
+	 */
+	public void setUserSubscription(PersonSubscription userSubscription) {
+		this.userSubscription = userSubscription;
+	}
 
 	/**
 	 * @return the createdBy
@@ -139,6 +154,48 @@ public class UserSubscriptionResource implements Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the resource
+	 */
+	public String getResource() {
+		return resource;
+	}
+
+	/**
+	 * @param resource the resource to set
+	 */
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+	/**
+	 * @return the lastCheckTime
+	 */
+	public Date getLastCheckTime() {
+		return lastCheckTime;
+	}
+
+	/**
+	 * @param lastCheckTime the lastCheckTime to set
+	 */
+	public void setLastCheckTime(Date lastCheckTime) {
+		this.lastCheckTime = lastCheckTime;
+	}
+
+	/**
+	 * @return the nextCheckTime
+	 */
+	public Date getNextCheckTime() {
+		return nextCheckTime;
+	}
+
+	/**
+	 * @param nextCheckTime the nextCheckTime to set
+	 */
+	public void setNextCheckTime(Date nextCheckTime) {
+		this.nextCheckTime = nextCheckTime;
 	}
 
 	/**
@@ -251,61 +308,5 @@ public class UserSubscriptionResource implements Serializable {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the userSubscription
-	 */
-	public UserSubscription getUserSubscription() {
-		return userSubscription;
-	}
-
-	/**
-	 * @param userSubscription the userSubscription to set
-	 */
-	public void setUserSubscription(UserSubscription userSubscription) {
-		this.userSubscription = userSubscription;
-	}
-
-	/**
-	 * @return the resource
-	 */
-	public String getResource() {
-		return resource;
-	}
-
-	/**
-	 * @param resource the resource to set
-	 */
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
-
-	/**
-	 * @return the lastCheckTime
-	 */
-	public Date getLastCheckTime() {
-		return lastCheckTime;
-	}
-
-	/**
-	 * @param lastCheckTime the lastCheckTime to set
-	 */
-	public void setLastCheckTime(Date lastCheckTime) {
-		this.lastCheckTime = lastCheckTime;
-	}
-
-	/**
-	 * @return the nextCheckTime
-	 */
-	public Date getNextCheckTime() {
-		return nextCheckTime;
-	}
-
-	/**
-	 * @param nextCheckTime the nextCheckTime to set
-	 */
-	public void setNextCheckTime(Date nextCheckTime) {
-		this.nextCheckTime = nextCheckTime;
 	}
 }

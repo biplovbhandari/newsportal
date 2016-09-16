@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.newsportal.model.bean.AuthUser;
+import com.newsportal.model.bean.auth.AuthUser;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class Utils {

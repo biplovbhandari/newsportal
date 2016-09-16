@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.auth;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,21 +23,24 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * @author Biplov's
- *
- */
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.doc.DocImage;
+import com.newsportal.model.bean.news.NewsComment;
+import com.newsportal.model.bean.news.NewsPost;
+import com.newsportal.model.bean.person.PersonProfile;
+import com.newsportal.model.bean.person.PersonSubscription;
+import com.newsportal.model.bean.person.PersonSubscriptionFilter;
 
 @Entity
 @Table(name = "auth_user")
 public class AuthUser implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Columns
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="profile_id")
-	private UserProfile profileId;
+	private PersonProfile profileId;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_post",
@@ -56,10 +59,10 @@ public class AuthUser implements Serializable {
 	private Set<DocImage> docImage = new LinkedHashSet<DocImage>();
 	
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="userId")
-	private Set<UserSubscription> userSubscription = new LinkedHashSet<UserSubscription>();
+	private Set<PersonSubscription> userSubscription = new LinkedHashSet<PersonSubscription>();
 
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="userId")
-	private Set<UserSubscriptionFilter> userSubscriptionFilter = new LinkedHashSet<UserSubscriptionFilter>();
+	private Set<PersonSubscriptionFilter> userSubscriptionFilter = new LinkedHashSet<PersonSubscriptionFilter>();
 	
 	/*************************************************/
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -174,22 +177,7 @@ public class AuthUser implements Serializable {
 		this.password = password;
 		this.email = email;
 	}
-	
-	/** Getters and Setters**/
 
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
 	/**
 	 * @return the newsPost
 	 */
@@ -205,6 +193,20 @@ public class AuthUser implements Serializable {
 	}
 
 	/**
+	 * @return the authEvent
+	 */
+	public Set<AuthEvent> getAuthEvent() {
+		return authEvent;
+	}
+
+	/**
+	 * @param authEvent the authEvent to set
+	 */
+	public void setAuthEvent(Set<AuthEvent> authEvent) {
+		this.authEvent = authEvent;
+	}
+
+	/**
 	 * @return the newsComment
 	 */
 	public Set<NewsComment> getNewsComment() {
@@ -216,6 +218,118 @@ public class AuthUser implements Serializable {
 	 */
 	public void setNewsComment(Set<NewsComment> newsComment) {
 		this.newsComment = newsComment;
+	}
+
+	/**
+	 * @return the docImage
+	 */
+	public Set<DocImage> getDocImage() {
+		return docImage;
+	}
+
+	/**
+	 * @param docImage the docImage to set
+	 */
+	public void setDocImage(Set<DocImage> docImage) {
+		this.docImage = docImage;
+	}
+
+	/**
+	 * @return the profileId
+	 */
+	public PersonProfile getProfileId() {
+		return profileId;
+	}
+
+	/**
+	 * @param profileId the profileId to set
+	 */
+	public void setProfileId(PersonProfile profileId) {
+		this.profileId = profileId;
+	}
+
+	/**
+	 * @return the userSubscription
+	 */
+	public Set<PersonSubscription> getUserSubscription() {
+		return userSubscription;
+	}
+
+	/**
+	 * @param userSubscription the userSubscription to set
+	 */
+	public void setUserSubscription(Set<PersonSubscription> userSubscription) {
+		this.userSubscription = userSubscription;
+	}
+
+	/**
+	 * @return the userSubscriptionFilter
+	 */
+	public Set<PersonSubscriptionFilter> getUserSubscriptionFilter() {
+		return userSubscriptionFilter;
+	}
+
+	/**
+	 * @param userSubscriptionFilter the userSubscriptionFilter to set
+	 */
+	public void setUserSubscriptionFilter(Set<PersonSubscriptionFilter> userSubscriptionFilter) {
+		this.userSubscriptionFilter = userSubscriptionFilter;
+	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public AuthUser getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * @param createdBy the createdBy to set
+	 */
+	public void setCreatedBy(AuthUser createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the approvedBy
+	 */
+	public AuthUser getApprovedBy() {
+		return approvedBy;
+	}
+
+	/**
+	 * @param approvedBy the approvedBy to set
+	 */
+	public void setApprovedBy(AuthUser approvedBy) {
+		this.approvedBy = approvedBy;
+	}
+
+	/**
+	 * @return the modifiedBy
+	 */
+	public AuthUser getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * @param modifiedBy the modifiedBy to set
+	 */
+	public void setModifiedBy(AuthUser modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	/**
@@ -429,62 +543,6 @@ public class AuthUser implements Serializable {
 	}
 
 	/**
-	 * @return the profileId
-	 */
-	public UserProfile getProfileId() {
-		return profileId;
-	}
-
-	/**
-	 * @param profileId the profileId to set
-	 */
-	public void setProfileId(UserProfile profileId) {
-		this.profileId = profileId;
-	}
-
-	/**
-	 * @return the createdBy
-	 */
-	public AuthUser getCreatedBy() {
-		return createdBy;
-	}
-
-	/**
-	 * @param createdBy the createdBy to set
-	 */
-	public void setCreatedBy(AuthUser createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	/**
-	 * @return the approvedBy
-	 */
-	public AuthUser getApprovedBy() {
-		return approvedBy;
-	}
-
-	/**
-	 * @param approvedBy the approvedBy to set
-	 */
-	public void setApprovedBy(AuthUser approvedBy) {
-		this.approvedBy = approvedBy;
-	}
-
-	/**
-	 * @return the modifiedBy
-	 */
-	public AuthUser getModifiedBy() {
-		return modifiedBy;
-	}
-
-	/**
-	 * @param modifiedBy the modifiedBy to set
-	 */
-	public void setModifiedBy(AuthUser modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	/**
 	 * @return the createdByUsers
 	 */
 	public Set<AuthUser> getCreatedByUsers() {
@@ -597,16 +655,9 @@ public class AuthUser implements Serializable {
 	}
 
 	/**
-	 * @return the authEvent
+	 * @return the serialversionuid
 	 */
-	public Set<AuthEvent> getAuthEvent() {
-		return authEvent;
-	}
-
-	/**
-	 * @param authEvent the authEvent to set
-	 */
-	public void setAuthEvent(Set<AuthEvent> authEvent) {
-		this.authEvent = authEvent;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }

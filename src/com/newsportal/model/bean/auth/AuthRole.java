@@ -1,12 +1,10 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.auth;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,30 +14,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+
 @Entity
-@Table(name = "user_subscription")
-public class UserSubscription implements Serializable {
-	
+@Table(name = "auth_role")
+public class AuthRole implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-
-	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="filter_id")
-	private UserSubscriptionFilter filterId;
-	
-	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="resource_id")
-	private UserSubscriptionResource resourceId;
-	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
 	private AuthUser createdBy;
@@ -57,14 +44,17 @@ public class UserSubscription implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="notify_policy", length=16)
-	private String notify_policy;
+	@Column(name="uuid", length=64)
+	private String uuid;
 	
-	@Column(name="method", length=64)
-	private String method;
+	@Column(name="hidden")
+	private Boolean hidden=false;
 	
-	@Column(name="comments", columnDefinition="TEXT")
-	private String comments;
+	@Column(name="role")
+	private String role;
+	
+	@Column(name="description", columnDefinition="TEXT")
+	private String description;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
@@ -74,9 +64,6 @@ public class UserSubscription implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
 	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@Column(name = "uuid", unique = true)
-	private String uuid = UUID.randomUUID().toString();
 	
 	@Column(name="deleted")
 	private Boolean deleted = false;
@@ -91,33 +78,18 @@ public class UserSubscription implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
-
+	
 	/**
-	 * @return the userId
+	 * Constructors
 	 */
-	public AuthUser getUserId() {
-		return userId;
+	public AuthRole() {
+		
 	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(AuthUser userId) {
-		this.userId = userId;
-	}
-
-	/**
-	 * @return the filterId
-	 */
-	public UserSubscriptionFilter getFilterId() {
-		return filterId;
-	}
-
-	/**
-	 * @param filterId the filterId to set
-	 */
-	public void setFilterId(UserSubscriptionFilter filterId) {
-		this.filterId = filterId;
+	
+	public AuthRole(String UUID, String role) {
+		
+		this.uuid = UUID;
+		this.role = role;
 	}
 
 	/**
@@ -177,45 +149,59 @@ public class UserSubscription implements Serializable {
 	}
 
 	/**
-	 * @return the notify_policy
+	 * @return the uuid
 	 */
-	public String getNotify_policy() {
-		return notify_policy;
+	public String getUuid() {
+		return uuid;
 	}
 
 	/**
-	 * @param notify_policy the notify_policy to set
+	 * @param uuid the uuid to set
 	 */
-	public void setNotify_policy(String notify_policy) {
-		this.notify_policy = notify_policy;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	/**
-	 * @return the method
+	 * @return the hidden
 	 */
-	public String getMethod() {
-		return method;
+	public Boolean getHidden() {
+		return hidden;
 	}
 
 	/**
-	 * @param method the method to set
+	 * @param hidden the hidden to set
 	 */
-	public void setMethod(String method) {
-		this.method = method;
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
 	}
 
 	/**
-	 * @return the comments
+	 * @return the role
 	 */
-	public String getComments() {
-		return comments;
+	public String getRole() {
+		return role;
 	}
 
 	/**
-	 * @param comments the comments to set
+	 * @param role the role to set
 	 */
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
@@ -258,20 +244,6 @@ public class UserSubscription implements Serializable {
 	 */
 	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
 		this.modifiedByUsers = modifiedByUsers;
-	}
-
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	/**
@@ -328,19 +300,5 @@ public class UserSubscription implements Serializable {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the resourceId
-	 */
-	public UserSubscriptionResource getResourceId() {
-		return resourceId;
-	}
-
-	/**
-	 * @param resourceId the resourceId to set
-	 */
-	public void setResourceId(UserSubscriptionResource resourceId) {
-		this.resourceId = resourceId;
 	}
 }

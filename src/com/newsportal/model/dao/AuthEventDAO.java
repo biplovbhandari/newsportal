@@ -1,6 +1,6 @@
 package com.newsportal.model.dao;
 
-import com.newsportal.model.bean.AuthEvent;
+import com.newsportal.model.bean.auth.AuthEvent;
 
 public class AuthEventDAO extends DAO<AuthEvent> {
 

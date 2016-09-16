@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.newsportal.model.bean.AuthPermission;
-import com.newsportal.model.bean.AuthRelation;
-import com.newsportal.model.bean.AuthRole;
-import com.newsportal.model.bean.AuthUser;
+import com.newsportal.model.bean.auth.AuthPermission;
+import com.newsportal.model.bean.auth.AuthRelation;
+import com.newsportal.model.bean.auth.AuthRole;
+import com.newsportal.model.bean.auth.AuthUser;
 import com.newsportal.model.services.AuthPermissionService;
 import com.newsportal.model.services.AuthRelationService;
 import com.newsportal.model.services.AuthRoleService;

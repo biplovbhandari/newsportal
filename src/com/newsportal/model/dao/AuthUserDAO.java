@@ -1,6 +1,6 @@
 package com.newsportal.model.dao;
 
-import com.newsportal.model.bean.AuthUser;
+import com.newsportal.model.bean.auth.AuthUser;
 
 public class AuthUserDAO extends DAO<AuthUser>{
 

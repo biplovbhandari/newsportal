@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.auth;
 
 import java.io.Serializable;
 
@@ -12,10 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.newsportal.model.bean.auth.AuthRole;
+import com.newsportal.model.bean.auth.AuthUser;
+
 @Entity
 @Table(name = "auth_permission")
 public class AuthPermission implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
@@ -68,7 +71,7 @@ public class AuthPermission implements Serializable {
 		this.userPermission = userPermission;
 		this.roleId = roleId;
 	}
-	
+
 	/**
 	 * @return the createdBy
 	 */
@@ -123,13 +126,6 @@ public class AuthPermission implements Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	/**
@@ -201,5 +197,4 @@ public class AuthPermission implements Serializable {
 	public void setUserPermission(String userPermission) {
 		this.userPermission = userPermission;
 	}
-	
 }

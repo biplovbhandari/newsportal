@@ -2,7 +2,7 @@ package com.newsportal.model.services;
 
 import java.util.logging.Logger;
 
-import com.newsportal.model.bean.AuthRelation;
+import com.newsportal.model.bean.auth.AuthRelation;
 import com.newsportal.model.dao.AuthRelationDAO;
 
 public class AuthRelationService extends Service<AuthRelation>{

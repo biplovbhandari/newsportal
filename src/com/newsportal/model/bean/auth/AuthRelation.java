@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.auth;
 
 import java.io.Serializable;
 
@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.newsportal.model.bean.auth.AuthRole;
+import com.newsportal.model.bean.auth.AuthUser;
 
 @Entity
 @Table(name = "auth_relation")
@@ -57,18 +60,7 @@ public class AuthRelation implements Serializable {
 		this.userId = authUser;
 		this.roleId = authRole;
 	}
-	
-	/**
-	 * Getters and Setters
-	 */
 
-	/**
-	 * @return the userId
-	 */
-	public AuthUser getUserId() {
-		return userId;
-	}
-	
 	/**
 	 * @return the id
 	 */
@@ -84,71 +76,72 @@ public class AuthRelation implements Serializable {
 	}
 
 	/**
+	 * @return the userId
+	 */
+	public AuthUser getUserId() {
+		return userId;
+	}
+
+	/**
 	 * @param userId the userId to set
 	 */
 	public void setUserId(AuthUser userId) {
 		this.userId = userId;
 	}
-	
+
 	/**
 	 * @return the roleId
 	 */
 	public AuthRole getRoleId() {
 		return roleId;
 	}
+
 	/**
 	 * @param roleId the roleId to set
 	 */
 	public void setRoleId(AuthRole roleId) {
 		this.roleId = roleId;
 	}
+
 	/**
 	 * @return the createdBy
 	 */
 	public AuthUser getCreatedBy() {
 		return createdBy;
 	}
-	
+
 	/**
 	 * @param createdBy the createdBy to set
 	 */
 	public void setCreatedBy(AuthUser createdBy) {
 		this.createdBy = createdBy;
 	}
-	
+
 	/**
 	 * @return the approvedBy
 	 */
 	public AuthUser getApprovedBy() {
 		return approvedBy;
 	}
-	
+
 	/**
 	 * @param approvedBy the approvedBy to set
 	 */
 	public void setApprovedBy(AuthUser approvedBy) {
 		this.approvedBy = approvedBy;
 	}
-	
+
 	/**
 	 * @return the modifiedBy
 	 */
 	public AuthUser getModifiedBy() {
 		return modifiedBy;
 	}
-	
+
 	/**
 	 * @param modifiedBy the modifiedBy to set
 	 */
 	public void setModifiedBy(AuthUser modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 }

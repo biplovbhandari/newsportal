@@ -1,6 +1,6 @@
 package com.newsportal.model.dao;
 
-import com.newsportal.model.bean.AuthPermission;
+import com.newsportal.model.bean.auth.AuthPermission;
 
 public class AuthPermissionDAO extends DAO<AuthPermission>{
 

@@ -2,7 +2,7 @@ package com.newsportal.model.services;
 
 import java.util.logging.Logger;
 
-import com.newsportal.model.bean.AuthPermission;
+import com.newsportal.model.bean.auth.AuthPermission;
 import com.newsportal.model.dao.AuthPermissionDAO;
 
 public class AuthPermissionService extends Service<AuthPermission> {

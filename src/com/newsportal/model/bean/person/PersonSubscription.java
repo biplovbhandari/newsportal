@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.person;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,17 +16,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.person.PersonSubscriptionFilter;
+import com.newsportal.model.bean.person.PersonSubscriptionResource;
+
 @Entity
-@Table(name = "user_profile")
-public class UserProfile implements Serializable {
-	
+@Table(name = "person_subscription")
+public class PersonSubscription implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="user_id")
+	private AuthUser userId;
+
+	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name="filter_id")
+	private PersonSubscriptionFilter filterId;
+	
+	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name="resource_id")
+	private PersonSubscriptionResource resourceId;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
 	private AuthUser createdBy;
@@ -43,17 +61,14 @@ public class UserProfile implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="dob")
-	private Date dob;
-
-	@Column(name="gender", length=16)
-	private String gender;
-
-	@Column(name="contact_method", length=32)
-	private String contactMethod;
+	@Column(name="notify_policy", length=16)
+	private String notify_policy;
 	
-	@Column(name="contact_value", length=512)
-	private String contactValue;
+	@Column(name="method", length=64)
+	private String method;
+	
+	@Column(name="comments", columnDefinition="TEXT")
+	private String comments;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
@@ -82,75 +97,18 @@ public class UserProfile implements Serializable {
 	private Date modifiedOn = new Date();
 
 	/**
-	 * @return the id
+	 * @return the userId
 	 */
-	public Long getId() {
-		return id;
+	public AuthUser getUserId() {
+		return userId;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param userId the userId to set
 	 */
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(AuthUser userId) {
+		this.userId = userId;
 	}
-
-	/**
-	 * @return the dob
-	 */
-	public Date getDob() {
-		return dob;
-	}
-
-	/**
-	 * @param dob the dob to set
-	 */
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	/**
-	 * @return the gender
-	 */
-	public String getGender() {
-		return gender;
-	}
-
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	/**
-	 * @return the contactMethod
-	 */
-	public String getContactMethod() {
-		return contactMethod;
-	}
-
-	/**
-	 * @param contactMethod the contactMethod to set
-	 */
-	public void setContactMethod(String contactMethod) {
-		this.contactMethod = contactMethod;
-	}
-
-	/**
-	 * @return the contactValue
-	 */
-	public String getContactValue() {
-		return contactValue;
-	}
-
-	/**
-	 * @param contactValue the contactValue to set
-	 */
-	public void setContactValue(String contactValue) {
-		this.contactValue = contactValue;
-	}
-
 	/**
 	 * @return the createdBy
 	 */
@@ -191,6 +149,90 @@ public class UserProfile implements Serializable {
 	 */
 	public void setModifiedBy(AuthUser modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the filterId
+	 */
+	public PersonSubscriptionFilter getFilterId() {
+		return filterId;
+	}
+
+	/**
+	 * @param filterId the filterId to set
+	 */
+	public void setFilterId(PersonSubscriptionFilter filterId) {
+		this.filterId = filterId;
+	}
+
+	/**
+	 * @return the resourceId
+	 */
+	public PersonSubscriptionResource getResourceId() {
+		return resourceId;
+	}
+
+	/**
+	 * @param resourceId the resourceId to set
+	 */
+	public void setResourceId(PersonSubscriptionResource resourceId) {
+		this.resourceId = resourceId;
+	}
+
+	/**
+	 * @return the notify_policy
+	 */
+	public String getNotify_policy() {
+		return notify_policy;
+	}
+
+	/**
+	 * @param notify_policy the notify_policy to set
+	 */
+	public void setNotify_policy(String notify_policy) {
+		this.notify_policy = notify_policy;
+	}
+
+	/**
+	 * @return the method
+	 */
+	public String getMethod() {
+		return method;
+	}
+
+	/**
+	 * @param method the method to set
+	 */
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	/**
@@ -304,6 +346,4 @@ public class UserProfile implements Serializable {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	
-	
 }

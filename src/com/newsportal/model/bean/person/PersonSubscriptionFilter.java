@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.person;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,20 +15,28 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.newsportal.utils.Utils;
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.person.PersonSubscription;
 
 @Entity
-@Table(name = "auth_event")
-public class AuthEvent implements Serializable {
-	
+@Table(name = "person_subscription_filter")
+public class PersonSubscriptionFilter implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	private AuthUser userId;
 
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="filterId")
+	private PersonSubscription userSubscription;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
 	private AuthUser createdBy;
@@ -45,23 +53,16 @@ public class AuthEvent implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-	
-	@Column(name="time_stamp")
-	private Date timeStamp = new Date();
-	
-	@Column(name="client_ip", length=512)
-	private String clientIp;
-	
-	@Column(name="origin", length=512)
-	private String origin;
+
+	@Column(name="query", columnDefinition="TEXT")
+	private String query;
 	
 	@Column(name="description", columnDefinition="TEXT")
 	private String description;
-
+	
+	@Column(name="comments", columnDefinition="TEXT")
+	private String comments;
+	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
 
@@ -89,21 +90,6 @@ public class AuthEvent implements Serializable {
 	private Date modifiedOn = new Date();
 
 	/**
-	 * Constructors
-	 */
-	public AuthEvent() {
-		
-	}
-	
-	public AuthEvent(AuthUser authUser, String clientIp, String description) {
-		
-		this.userId = authUser;
-		this.clientIp = clientIp;
-		this.description = Utils.getFullName(authUser) + description;
-		this.timeStamp = new Date();
-	}
-	
-	/**
 	 * @return the userId
 	 */
 	public AuthUser getUserId() {
@@ -118,17 +104,17 @@ public class AuthEvent implements Serializable {
 	}
 
 	/**
-	 * @return the timeStamp
+	 * @return the userSubscription
 	 */
-	public Date getTimeStamp() {
-		return timeStamp;
+	public PersonSubscription getUserSubscription() {
+		return userSubscription;
 	}
 
 	/**
-	 * @param timeStamp the timeStamp to set
+	 * @param userSubscription the userSubscription to set
 	 */
-	public void setTimeStamp(Date timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setUserSubscription(PersonSubscription userSubscription) {
+		this.userSubscription = userSubscription;
 	}
 
 	/**
@@ -188,31 +174,17 @@ public class AuthEvent implements Serializable {
 	}
 
 	/**
-	 * @return the clientIp
+	 * @return the query
 	 */
-	public String getClientIp() {
-		return clientIp;
+	public String getQuery() {
+		return query;
 	}
 
 	/**
-	 * @param clientIp the clientIp to set
+	 * @param query the query to set
 	 */
-	public void setClientIp(String clientIp) {
-		this.clientIp = clientIp;
-	}
-
-	/**
-	 * @return the origin
-	 */
-	public String getOrigin() {
-		return origin;
-	}
-
-	/**
-	 * @param origin the origin to set
-	 */
-	public void setOrigin(String origin) {
-		this.origin = origin;
+	public void setQuery(String query) {
+		this.query = query;
 	}
 
 	/**
@@ -227,6 +199,20 @@ public class AuthEvent implements Serializable {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	/**

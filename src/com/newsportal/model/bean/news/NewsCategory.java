@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.news;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,83 +15,30 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.news.NewsPost;
+
 @Entity
-@Table(name = "news_comment")
-public class NewsComment implements Serializable {
+@Table(name = "news_category")
+public class NewsCategory implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	// Relationships Column
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="parent")
-	private NewsComment parent;
-	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="commentId")
-	private DocImage docImage;
+	/**
+	 * @return the newsPost
+	 */
+	public Set<NewsPost> getNewsPost() {
+		return newsPost;
+	}
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="created_by")
-	private AuthUser createdBy;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="approved_by")
-	private AuthUser approvedBy;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="modified_by")
-	private AuthUser modifiedBy;
-	
-	// Fields
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="parent")
-	private Set<NewsComment> parentIds = new LinkedHashSet<NewsComment>();
-	
-	@ManyToOne
-	@JoinColumn(name="post_id")
-	private NewsPost postId;
-	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-
-	@Column(name="body", columnDefinition="TEXT")
-	private String body;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
-	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
-	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
-	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@Column(name = "uuid", unique = true)
-	private String uuid = UUID.randomUUID().toString();
-	
-	@Column(name="deleted")
-	private Boolean deleted = false;
-	
-	@Column(name="deleted_fk", length=512) // deleted foreign keys
-	private String deletedFk;
-	
-	@Column(name="created_on")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdOn;
-	
-	@Column(name="modified_on")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedOn = new Date();
-
-	/** Getters and Setters **/
+	/**
+	 * @param newsPost the newsPost to set
+	 */
+	public void setNewsPost(Set<NewsPost> newsPost) {
+		this.newsPost = newsPost;
+	}
 
 	/**
 	 * @return the createdBy
@@ -150,73 +97,31 @@ public class NewsComment implements Serializable {
 	}
 
 	/**
-	 * @return the parent
+	 * @return the name
 	 */
-	public NewsComment getParent() {
-		return parent;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param parent the parent to set
+	 * @param name the name to set
 	 */
-	public void setParent(NewsComment parent) {
-		this.parent = parent;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
-	 * @return the parentIds
+	 * @return the comments
 	 */
-	public Set<NewsComment> getParentIds() {
-		return parentIds;
+	public String getComments() {
+		return comments;
 	}
 
 	/**
-	 * @param parentIds the parentIds to set
+	 * @param comments the comments to set
 	 */
-	public void setParentIds(Set<NewsComment> parentIds) {
-		this.parentIds = parentIds;
-	}
-
-	/**
-	 * @return the postId
-	 */
-	public NewsPost getPostId() {
-		return postId;
-	}
-
-	/**
-	 * @param postId the postId to set
-	 */
-	public void setPostId(NewsPost postId) {
-		this.postId = postId;
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public AuthUser getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(AuthUser userId) {
-		this.userId = userId;
-	}
-
-	/**
-	 * @return the body
-	 */
-	public String getBody() {
-		return body;
-	}
-
-	/**
-	 * @param body the body to set
-	 */
-	public void setBody(String body) {
-		this.body = body;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	/**
@@ -330,5 +235,59 @@ public class NewsComment implements Serializable {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
+
+	private static final long serialVersionUID = 1L;
 	
+	// Relationships Column
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="categoryId")
+	private Set<NewsPost> newsPost = new LinkedHashSet<NewsPost>();
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="created_by")
+	private AuthUser createdBy;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="approved_by")
+	private AuthUser approvedBy;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="modified_by")
+	private AuthUser modifiedBy;
+	
+	// Fields
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name="name")
+	private String name;
+	
+	@Column(name="comments", columnDefinition="TEXT")
+	private String comments;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
+	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
+	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
+	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
+	
+	@Column(name = "uuid", unique = true)
+	private String uuid = UUID.randomUUID().toString();
+	
+	@Column(name="deleted")
+	private Boolean deleted = false;
+	
+	@Column(name="deleted_fk", length=512) // deleted foreign keys
+	private String deletedFk;
+	
+	@Column(name="created_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdOn;
+	
+	@Column(name="modified_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedOn = new Date();
 }

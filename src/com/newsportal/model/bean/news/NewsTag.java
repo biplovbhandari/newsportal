@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.news;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,14 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+
 @Entity
-@Table(name = "doc_image")
-public class DocImage implements Serializable {
+@Table(name = "news_tag")
+public class NewsTag implements Serializable {
+
 
 	private static final long serialVersionUID = 1L;
 	
@@ -44,31 +46,8 @@ public class DocImage implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-	
-	@OneToOne
-	@JoinColumn(name="comment_id")
-	private NewsComment commentId;
-	
-	@Column(name="file")
-	private String file;
-	
-	@Column(name="file_size")
-	private String file_size;
-	
-	@Column(name="mime_type")
-	private String mime_type;
-	
-	@Column(name="name", length=128)
+	@Column(name="name", length=512)
 	private String name;
-	
-	@Column(name="date")
-	private Date date;
-	
-	@Column(name="checksum", length=512)
-	private String checksum;
 	
 	@Column(name="comments", columnDefinition="TEXT")
 	private String comments;
@@ -99,8 +78,6 @@ public class DocImage implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
 	
-	/** Getters and Setters **/
-
 	/**
 	 * @return the createdBy
 	 */
@@ -158,76 +135,6 @@ public class DocImage implements Serializable {
 	}
 
 	/**
-	 * @return the userId
-	 */
-	public AuthUser getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(AuthUser userId) {
-		this.userId = userId;
-	}
-
-	/**
-	 * @return the commentId
-	 */
-	public NewsComment getCommentId() {
-		return commentId;
-	}
-
-	/**
-	 * @param commentId the commentId to set
-	 */
-	public void setCommentId(NewsComment commentId) {
-		this.commentId = commentId;
-	}
-
-	/**
-	 * @return the file
-	 */
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param file the file to set
-	 */
-	public void setFile(String file) {
-		this.file = file;
-	}
-
-	/**
-	 * @return the file_size
-	 */
-	public String getFile_size() {
-		return file_size;
-	}
-
-	/**
-	 * @param file_size the file_size to set
-	 */
-	public void setFile_size(String file_size) {
-		this.file_size = file_size;
-	}
-
-	/**
-	 * @return the mime_type
-	 */
-	public String getMime_type() {
-		return mime_type;
-	}
-
-	/**
-	 * @param mime_type the mime_type to set
-	 */
-	public void setMime_type(String mime_type) {
-		this.mime_type = mime_type;
-	}
-
-	/**
 	 * @return the name
 	 */
 	public String getName() {
@@ -239,34 +146,6 @@ public class DocImage implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * @return the checksum
-	 */
-	public String getChecksum() {
-		return checksum;
-	}
-
-	/**
-	 * @param checksum the checksum to set
-	 */
-	public void setChecksum(String checksum) {
-		this.checksum = checksum;
 	}
 
 	/**

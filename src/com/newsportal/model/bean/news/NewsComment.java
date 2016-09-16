@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.news;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,20 +20,25 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.doc.DocImage;
+import com.newsportal.model.bean.news.NewsComment;
+import com.newsportal.model.bean.news.NewsPost;
+
 @Entity
-@Table(name = "user_subscription_filter")
-public class UserSubscriptionFilter implements Serializable {
+@Table(name = "news_comment")
+public class NewsComment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	// Relationships Column
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	private AuthUser userId;
-
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="filterId")
-	private UserSubscription userSubscription;
+	@JoinColumn(name="parent")
+	private NewsComment parent;
 	
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="commentId")
+	private DocImage docImage;
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
 	private AuthUser createdBy;
@@ -50,15 +55,20 @@ public class UserSubscriptionFilter implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="parent")
+	private Set<NewsComment> parentIds = new LinkedHashSet<NewsComment>();
+	
+	@ManyToOne
+	@JoinColumn(name="post_id")
+	private NewsPost postId;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private AuthUser userId;
 
-	@Column(name="query", columnDefinition="TEXT")
-	private String query;
-	
-	@Column(name="description", columnDefinition="TEXT")
-	private String description;
-	
-	@Column(name="comments", columnDefinition="TEXT")
-	private String comments;
+	@Column(name="body", columnDefinition="TEXT")
+	private String body;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
 	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
@@ -85,6 +95,34 @@ public class UserSubscriptionFilter implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
+
+	/**
+	 * @return the parent
+	 */
+	public NewsComment getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(NewsComment parent) {
+		this.parent = parent;
+	}
+
+	/**
+	 * @return the docImage
+	 */
+	public DocImage getDocImage() {
+		return docImage;
+	}
+
+	/**
+	 * @param docImage the docImage to set
+	 */
+	public void setDocImage(DocImage docImage) {
+		this.docImage = docImage;
+	}
 
 	/**
 	 * @return the createdBy
@@ -143,45 +181,59 @@ public class UserSubscriptionFilter implements Serializable {
 	}
 
 	/**
-	 * @return the query
+	 * @return the parentIds
 	 */
-	public String getQuery() {
-		return query;
+	public Set<NewsComment> getParentIds() {
+		return parentIds;
 	}
 
 	/**
-	 * @param query the query to set
+	 * @param parentIds the parentIds to set
 	 */
-	public void setQuery(String query) {
-		this.query = query;
+	public void setParentIds(Set<NewsComment> parentIds) {
+		this.parentIds = parentIds;
 	}
 
 	/**
-	 * @return the description
+	 * @return the postId
 	 */
-	public String getDescription() {
-		return description;
+	public NewsPost getPostId() {
+		return postId;
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param postId the postId to set
 	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setPostId(NewsPost postId) {
+		this.postId = postId;
 	}
 
 	/**
-	 * @return the comments
+	 * @return the userId
 	 */
-	public String getComments() {
-		return comments;
+	public AuthUser getUserId() {
+		return userId;
 	}
 
 	/**
-	 * @param comments the comments to set
+	 * @param userId the userId to set
 	 */
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setUserId(AuthUser userId) {
+		this.userId = userId;
+	}
+
+	/**
+	 * @return the body
+	 */
+	public String getBody() {
+		return body;
+	}
+
+	/**
+	 * @param body the body to set
+	 */
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	/**
@@ -294,33 +346,5 @@ public class UserSubscriptionFilter implements Serializable {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public AuthUser getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(AuthUser userId) {
-		this.userId = userId;
-	}
-
-	/**
-	 * @return the userSubscription
-	 */
-	public UserSubscription getUserSubscription() {
-		return userSubscription;
-	}
-
-	/**
-	 * @param userSubscription the userSubscription to set
-	 */
-	public void setUserSubscription(UserSubscription userSubscription) {
-		this.userSubscription = userSubscription;
 	}
 }

@@ -1,4 +1,4 @@
-package com.newsportal.model.bean;
+package com.newsportal.model.bean.news;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,10 +23,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.newsportal.model.bean.auth.AuthUser;
+import com.newsportal.model.bean.doc.DocDocument;
+import com.newsportal.model.bean.doc.DocImage;
+import com.newsportal.model.bean.news.NewsCategory;
+import com.newsportal.model.bean.news.NewsTag;
+
 @Entity
 @Table(name = "news_post")
 public class NewsPost implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// Relationships Column
@@ -116,8 +122,6 @@ public class NewsPost implements Serializable {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedOn = new Date();
-	
-	/** Getters and Setters **/
 
 	/**
 	 * @return the categoryId
@@ -131,6 +135,48 @@ public class NewsPost implements Serializable {
 	 */
 	public void setCategoryId(NewsCategory categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	/**
+	 * @return the newsTag
+	 */
+	public Set<NewsTag> getNewsTag() {
+		return newsTag;
+	}
+
+	/**
+	 * @param newsTag the newsTag to set
+	 */
+	public void setNewsTag(Set<NewsTag> newsTag) {
+		this.newsTag = newsTag;
+	}
+
+	/**
+	 * @return the docImage
+	 */
+	public Set<DocImage> getDocImage() {
+		return docImage;
+	}
+
+	/**
+	 * @param docImage the docImage to set
+	 */
+	public void setDocImage(Set<DocImage> docImage) {
+		this.docImage = docImage;
+	}
+
+	/**
+	 * @return the docDocument
+	 */
+	public Set<DocDocument> getDocDocument() {
+		return docDocument;
+	}
+
+	/**
+	 * @param docDocument the docDocument to set
+	 */
+	public void setDocDocument(Set<DocDocument> docDocument) {
+		this.docDocument = docDocument;
 	}
 
 	/**
@@ -383,47 +429,5 @@ public class NewsPost implements Serializable {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
-	}
-
-	/**
-	 * @return the newsTag
-	 */
-	public Set<NewsTag> getNewsTag() {
-		return newsTag;
-	}
-
-	/**
-	 * @param newsTag the newsTag to set
-	 */
-	public void setNewsTag(Set<NewsTag> newsTag) {
-		this.newsTag = newsTag;
-	}
-
-	/**
-	 * @return the docImage
-	 */
-	public Set<DocImage> getDocImage() {
-		return docImage;
-	}
-
-	/**
-	 * @param docImage the docImage to set
-	 */
-	public void setDocImage(Set<DocImage> docImage) {
-		this.docImage = docImage;
-	}
-
-	/**
-	 * @return the docDocument
-	 */
-	public Set<DocDocument> getDocDocument() {
-		return docDocument;
-	}
-
-	/**
-	 * @param docDocument the docDocument to set
-	 */
-	public void setDocDocument(Set<DocDocument> docDocument) {
-		this.docDocument = docDocument;
 	}
 }

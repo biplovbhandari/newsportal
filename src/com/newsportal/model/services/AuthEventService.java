@@ -2,7 +2,7 @@ package com.newsportal.model.services;
 
 import java.util.logging.Logger;
 
-import com.newsportal.model.bean.AuthEvent;
+import com.newsportal.model.bean.auth.AuthEvent;
 import com.newsportal.model.dao.AuthEventDAO;
 
 public class AuthEventService extends Service<AuthEvent> {

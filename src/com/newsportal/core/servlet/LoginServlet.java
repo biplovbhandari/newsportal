@@ -14,14 +14,14 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.newsportal.utils.LoginInfo;
+import com.newsportal.utils.LoginOutput;
 import com.newsportal.model.auth.AuthEvent;
-import com.newsportal.model.auth.AuthRole;
+import com.newsportal.model.auth.AuthRelation;
 import com.newsportal.model.auth.AuthUser;
 import com.newsportal.controllers.services.AuthEventService;
-import com.newsportal.controllers.services.AuthRoleService;
+import com.newsportal.controllers.services.AuthRelationService;
 import com.newsportal.controllers.services.AuthUserService;
-import com.newsportal.utils.LoginRequest;
+import com.newsportal.utils.LoginInput;
 import com.newsportal.utils.Utils;
 
 public class LoginServlet extends HttpServlet {
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try{
 			
-			LoginRequest loginRequest = objectMapper.readValue(req.getInputStream(), LoginRequest.class);
+			LoginInput loginRequest = objectMapper.readValue(req.getInputStream(), LoginInput.class);
 			String email = loginRequest.getEmail();
 			@SuppressWarnings("unused")
 			String username = loginRequest.getUsername();
@@ -119,14 +119,14 @@ public class LoginServlet extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.setContentType("application/json");
 
-		LoginInfo loginInfo = new LoginInfo();
+		LoginOutput loginInfo = new LoginOutput();
 		loginInfo.setLoggedIn(true);
 		loginInfo.setApiKey(user.getApiKey());
 		loginInfo.setFullname(Utils.getFullName(user));
 		loginInfo.setUserId(user.getId());
 		loginInfo.setUsername(user.getUsername());
-		List<AuthRole> authRole = AuthRoleService.get().retrieveUserRole(user);
-		loginInfo.setRole(authRole);
+		List<AuthRelation> authRelation = AuthRelationService.get().retrieveUserRole(user);
+		loginInfo.setRelation(authRelation);
 		
 		if(loginInfo.getRole() != null) {
 			System.out.println("Filter role");

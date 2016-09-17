@@ -1,6 +1,6 @@
 package com.newsportal.utils;
 
-public class LoginRequest {
+public class LoginInput {
 	
 	private String username;
 	private String password;

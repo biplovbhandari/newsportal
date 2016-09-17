@@ -39,7 +39,7 @@ public class Utils {
 	
 	public static String getFieldType (Field field) {
 		
-		String fieldType = "null";
+		String fieldType = "none";
 		if (field != null) {
 			
 			Class <?> classType = field.getType();

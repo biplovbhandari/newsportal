@@ -2,9 +2,9 @@ package com.newsportal.utils;
 
 import java.util.List;
 
-import com.newsportal.model.auth.AuthRole;
+import com.newsportal.model.auth.AuthRelation;
 
-public class LoginInfo {
+public class LoginOutput {
 
 	private boolean loggedIn = false;
 	private Long userId;
@@ -12,7 +12,7 @@ public class LoginInfo {
 	private String fullname;
 	private String apiKey;
 	private String message;
-	private List<AuthRole> role;
+	private List<AuthRelation> role;
 	private List<Long> roleId;
 	private List<String> permissions;
 	/**
@@ -114,13 +114,13 @@ public class LoginInfo {
 	/**
 	 * @return the role
 	 */
-	public List<AuthRole> getRole() {
+	public List<AuthRelation> getRole() {
 		return role;
 	}
 	/**
 	 * @param role the role to set
 	 */
-	public void setRole(List<AuthRole> role) {
+	public void setRelation(List<AuthRelation> role) {
 		this.role = role;
 	}
 	

@@ -105,15 +105,31 @@ public abstract class DAO<T> {
 				} 
 				
 				String typeStr = Utils.getFieldType(field);
-				
+
 				Boolean isId = false;
+				if (typeStr == "Long" || fieldName == "id") {
+					isId = true;
+				}
 				String columnJoinName = "";
 				Boolean includeInQuery = true;
 				for(Annotation annotation : field.getAnnotations()){
+					String annoName = annotation.toString();
 					
-					if(annotation.toString().equals("@javax.persistence.Transient()")){
+					CharSequence cs1 = "JoinColumn";
+					if(annoName.contains(cs1)){
+						String[] splitColumn = annoName.split(",");
+						for(String StrSplitColumn : splitColumn){
+							cs1 = " name=";
+							if(StrSplitColumn.contains(cs1)){
+								String[] splitColumn1 = StrSplitColumn.split("=");
+								columnJoinName = splitColumn1[1];
+								break;
+							}
+						}
+					}
+					
+					if(annoName.equals("@javax.persistence.Transient()")){
 						includeInQuery = false;
-						break;
 					}
 				}
 				
@@ -132,25 +148,31 @@ public abstract class DAO<T> {
 						Class<?> c = null;
 						try {
 							c = Class.forName(m.getReturnType().getName());
-							Constructor<?> ctor = c.getConstructors()[0];
-						    Object object = null;
-						    Long valTemp = (long) 1;
-					    	try{
-					    		object = ctor.newInstance(new Object[] {valTemp });
-					    	}
-					    	catch(Exception e){
-					    		try {
-									object = ctor.newInstance(new Object[] {valTemp.toString() });
-								} catch (Exception e1) {
-									try {
-										object = ctor.newInstance(new Object[] {});
-									} catch (Exception e2) {
-										// TODO Auto-generated catch block
-										e2.printStackTrace();
-									} 
+							Constructor<?>[] ctors = c.getConstructors();
+							for(Constructor<?> ctor: ctors) {
 								
-								} 
-					    	}
+							    Object object = null;
+							    Long valTemp = (long) 1;
+						    	try{
+						    		object = ctor.newInstance(new Object[] {valTemp });
+						    		break;
+						    	}
+						    	catch(Exception e){
+						    		try {
+										object = ctor.newInstance(new Object[] {valTemp.toString() });
+										break;
+									} catch (Exception e1) {
+										try {
+											object = ctor.newInstance(new Object[] {});
+											break;
+										} catch (Exception e2) {
+											// TODO Auto-generated catch block
+											//e2.printStackTrace();
+										} 
+									
+									} 
+						    	}
+							}
 						} catch (ClassNotFoundException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -196,7 +218,7 @@ public abstract class DAO<T> {
 	public T findByParam(final Session session, final String columnName, final Object columnValue, Boolean filter) {
 		List<T> list = getListByParam(session, columnName, columnValue);
 
-		if(filter || (list.size() > 0)) {
+		if(filter && (list.size() > 0)) {
 			return list.get(0);
 		} else {
 			return (T) list;
@@ -399,6 +421,7 @@ public abstract class DAO<T> {
 		} 
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes" })
 	public Object setBeanFromObj(Class<?> clz){
 		Object obj = null;
 		if(mapObjClass.containsKey(clz)){
@@ -425,13 +448,12 @@ public abstract class DAO<T> {
 					String typeStr = Utils.getFieldType(field);
 					
 					if(typeStr.equals("none")){
-						@SuppressWarnings("rawtypes")
 						Class[] paramGnrl = new Class[1];	
 						paramGnrl[0] = m.getReturnType();
 						
 						Class<?> c = null;
-						@SuppressWarnings("unused")
 						Object object = null;
+
 						try {
 							c = Class.forName(paramGnrl[0].getName());
 							Constructor<?> ctor = c.getConstructors()[0];
@@ -460,7 +482,7 @@ public abstract class DAO<T> {
 						Method method = null;
 						try {
 							method = clz.getMethod(Utils.getSetterMethodName(field.getName()), paramGnrl);
-							method.invoke(obj, setBeanFromObj(c));
+							//method.invoke(obj, setBeanFromObj(c));
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

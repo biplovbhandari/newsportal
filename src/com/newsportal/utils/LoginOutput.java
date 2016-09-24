@@ -2,31 +2,19 @@ package com.newsportal.utils;
 
 import java.util.List;
 
-import com.newsportal.model.auth.AuthRelation;
-
 public class LoginOutput {
 
 	private boolean loggedIn = false;
 	private Long userId;
-	private String username;
-	private String fullname;
+	private String userName;
+	private String email;
+	private String firstName;
+	private String lastName;
+	private String middleName;
+	private String fullName;
 	private String apiKey;
-	private String message;
-	private List<AuthRelation> role;
-	private List<Long> roleId;
-	private List<String> permissions;
-	/**
-	 * @return the roleId
-	 */
-	public List<Long> getRoleId() {
-		return roleId;
-	}
-	/**
-	 * @param roleId the roleId to set
-	 */
-	public void setRoleId(List<Long> roleId) {
-		this.roleId = roleId;
-	}
+	private List<MapAuthRole> roles;
+
 	/**
 	 * @return the loggedIn
 	 */
@@ -52,28 +40,28 @@ public class LoginOutput {
 		this.userId = userId;
 	}
 	/**
-	 * @return the username
+	 * @return the userName
 	 */
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 	/**
-	 * @param username the username to set
+	 * @param username the userName to set
 	 */
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	/**
-	 * @return the fullname
+	 * @return the fullName
 	 */
-	public String getFullname() {
-		return fullname;
+	public String getFullName() {
+		return fullName;
 	}
 	/**
-	 * @param fullname the fullname to set
+	 * @param fullname the fullName to set
 	 */
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	/**
 	 * @return the apiKey
@@ -88,40 +76,63 @@ public class LoginOutput {
 		this.apiKey = apiKey;
 	}
 	/**
-	 * @return the message
+	 * @return the roles
 	 */
-	public String getMessage() {
-		return message;
+	public List<MapAuthRole> getRoles() {
+		return roles;
 	}
 	/**
-	 * @param message the message to set
+	 * @param roles the roles to set
 	 */
-	public void setMessage(String message) {
-		this.message = message;
+	public void setRoles(List<MapAuthRole> roles) {
+		this.roles = roles;
 	}
 	/**
-	 * @return the permissions
+	 * @return the firstName
 	 */
-	public List<String> getPermissions() {
-		return permissions;
+	public String getFirstName() {
+		return firstName;
 	}
 	/**
-	 * @param permissions the permissions to set
+	 * @param firstName the firstName to set
 	 */
-	public void setPermissions(List<String> permissions) {
-		this.permissions = permissions;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 	/**
-	 * @return the role
+	 * @return the lastName
 	 */
-	public List<AuthRelation> getRole() {
-		return role;
+	public String getLastName() {
+		return lastName;
 	}
 	/**
-	 * @param role the role to set
+	 * @param lastName the lastName to set
 	 */
-	public void setRelation(List<AuthRelation> role) {
-		this.role = role;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	
+	/**
+	 * @return the middleName
+	 */
+	public String getMiddleName() {
+		return middleName;
+	}
+	/**
+	 * @param middleName the middleName to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

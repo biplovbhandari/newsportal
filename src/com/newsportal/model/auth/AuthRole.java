@@ -50,8 +50,8 @@ public class AuthRole implements Serializable {
 	@Column(name="hidden")
 	private Boolean hidden=false;
 	
-	@Column(name="role")
-	private String role;
+	@Column(name="name")
+	private String name;
 	
 	@Column(name="description", columnDefinition="TEXT")
 	private String description;
@@ -86,10 +86,10 @@ public class AuthRole implements Serializable {
 		
 	}
 	
-	public AuthRole(String UUID, String role) {
+	public AuthRole(String UUID, String name) {
 		
 		this.uuid = UUID;
-		this.role = role;
+		this.name = name;
 	}
 
 	/**
@@ -177,17 +177,17 @@ public class AuthRole implements Serializable {
 	}
 
 	/**
-	 * @return the role
+	 * @return the name
 	 */
-	public String getRole() {
-		return role;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param role the role to set
+	 * @param name the role name to set
 	 */
-	public void setRole(String role) {
-		this.role = role;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**

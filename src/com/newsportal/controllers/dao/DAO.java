@@ -227,7 +227,7 @@ public abstract class DAO<T> {
 
 	public List<T> getListByParam(final Session session, final String columnName, final Object columnValue) {
 		String where = "where bean." + columnName + "='" + columnValue.toString() + "'";
-		return list(session, 0, -1,"id", false, where,1,new ArrayList<MapWhereQuery>());
+		return list(session, 0, -1, "id", false, where, 1, new ArrayList<MapWhereQuery>());
 	}
 
 	@SuppressWarnings("unchecked")

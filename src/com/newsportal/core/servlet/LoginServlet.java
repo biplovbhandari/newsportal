@@ -15,8 +15,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.newsportal.utils.LoginOutput;
+import com.newsportal.utils.MapAuthRole;
 import com.newsportal.model.auth.AuthEvent;
-import com.newsportal.model.auth.AuthRelation;
 import com.newsportal.model.auth.AuthUser;
 import com.newsportal.controllers.services.AuthEventService;
 import com.newsportal.controllers.services.AuthRelationService;
@@ -42,7 +42,6 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try{
-			
 			LoginInput loginRequest = objectMapper.readValue(req.getInputStream(), LoginInput.class);
 			String email = loginRequest.getEmail();
 			@SuppressWarnings("unused")
@@ -122,16 +121,16 @@ public class LoginServlet extends HttpServlet {
 		LoginOutput loginInfo = new LoginOutput();
 		loginInfo.setLoggedIn(true);
 		loginInfo.setApiKey(user.getApiKey());
-		loginInfo.setFullname(Utils.getFullName(user));
+		loginInfo.setFullName(Utils.getFullName(user));
 		loginInfo.setUserId(user.getId());
-		loginInfo.setUsername(user.getUsername());
-		List<AuthRelation> authRelation = AuthRelationService.get().retrieveUserRole(user);
-		loginInfo.setRelation(authRelation);
-		
-		if(loginInfo.getRole() != null) {
-			System.out.println("Filter role");
-		}
-		
+		loginInfo.setUserName(user.getUsername());
+		loginInfo.setFirstName(user.getFirstName());
+		loginInfo.setLastName(user.getLastName());
+		loginInfo.setMiddleName(user.getMiddleName());
+		loginInfo.setEmail(user.getEmail());
+		List<MapAuthRole> mapAuthRole = AuthRelationService.get().retrieveUserRole(user);
+		loginInfo.setRoles(mapAuthRole);
+	
 		resp.setHeader("Access-Control-Allow-Origin", "*");
 		resp.setHeader("Access-Control-Allow-Methods", "POST");
 		resp.setHeader("Access-Control-Allow-Headers", "Content-Type");

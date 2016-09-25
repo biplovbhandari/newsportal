@@ -34,7 +34,21 @@ public class Utils {
 	
 	public static String getFullName(AuthUser authUser) {
 		
-		return authUser.getFirstName() + " " + authUser.getMiddleName() + " " + authUser.getLastName();
+		String fullName = "";
+		fullName += authUser.getFirstName();
+
+		String middleName = authUser.getMiddleName();
+		String lastName = authUser.getLastName();
+		
+		if (middleName != null) {			
+			fullName = fullName + " " + middleName; 
+		}
+		
+		if (lastName != null) {			
+			fullName = fullName + " " + lastName;
+		}
+
+		return fullName;
 	}
 	
 	public static String getFieldType (Field field) {

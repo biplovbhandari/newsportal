@@ -15,7 +15,7 @@ public abstract class FirstRun extends ServerResource {
 	private Form form;
 
 	@Override
-	protected void doInit() throws ResourceException{
+	protected void doInit() throws ResourceException {
 
 		// Get data from the request
 		form = getQuery();

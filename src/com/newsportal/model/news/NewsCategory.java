@@ -26,6 +26,52 @@ import com.newsportal.model.news.NewsPost;
 @Table(name = "news_category")
 public class NewsCategory implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	// Relationships Column
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="categoryId")
+	private Set<NewsPost> newsPost = new LinkedHashSet<NewsPost>();
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="created_by")
+	private AuthUser createdBy;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="approved_by")
+	private AuthUser approvedBy;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="modified_by")
+	private AuthUser modifiedBy;
+	
+	// Fields
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name="name")
+	private String name;
+	
+	@Column(name="comments", columnDefinition="TEXT")
+	private String comments;
+	
+	@Column(name = "uuid", unique = true)
+	private String uuid = UUID.randomUUID().toString();
+	
+	@Column(name="deleted")
+	private Boolean deleted = false;
+	
+	@Column(name="deleted_fk", length=512) // deleted foreign keys
+	private String deletedFk;
+	
+	@Column(name="created_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdOn;
+	
+	@Column(name="modified_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedOn = new Date();
+
 	/**
 	 * @return the newsPost
 	 */
@@ -125,48 +171,6 @@ public class NewsCategory implements Serializable {
 	}
 
 	/**
-	 * @return the createdByUsers
-	 */
-	public Set<AuthUser> getCreatedByUsers() {
-		return createdByUsers;
-	}
-
-	/**
-	 * @param createdByUsers the createdByUsers to set
-	 */
-	public void setCreatedByUsers(Set<AuthUser> createdByUsers) {
-		this.createdByUsers = createdByUsers;
-	}
-
-	/**
-	 * @return the approvedByUsers
-	 */
-	public Set<AuthUser> getApprovedByUsers() {
-		return approvedByUsers;
-	}
-
-	/**
-	 * @param approvedByUsers the approvedByUsers to set
-	 */
-	public void setApprovedByUsers(Set<AuthUser> approvedByUsers) {
-		this.approvedByUsers = approvedByUsers;
-	}
-
-	/**
-	 * @return the modifiedByUsers
-	 */
-	public Set<AuthUser> getModifiedByUsers() {
-		return modifiedByUsers;
-	}
-
-	/**
-	 * @param modifiedByUsers the modifiedByUsers to set
-	 */
-	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
-		this.modifiedByUsers = modifiedByUsers;
-	}
-
-	/**
 	 * @return the uuid
 	 */
 	public String getUuid() {
@@ -235,59 +239,4 @@ public class NewsCategory implements Serializable {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-
-	private static final long serialVersionUID = 1L;
-	
-	// Relationships Column
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="categoryId")
-	private Set<NewsPost> newsPost = new LinkedHashSet<NewsPost>();
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="created_by")
-	private AuthUser createdBy;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="approved_by")
-	private AuthUser approvedBy;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="modified_by")
-	private AuthUser modifiedBy;
-	
-	// Fields
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="comments", columnDefinition="TEXT")
-	private String comments;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
-	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
-	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
-	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@Column(name = "uuid", unique = true)
-	private String uuid = UUID.randomUUID().toString();
-	
-	@Column(name="deleted")
-	private Boolean deleted = false;
-	
-	@Column(name="deleted_fk", length=512) // deleted foreign keys
-	private String deletedFk;
-	
-	@Column(name="created_on")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdOn;
-	
-	@Column(name="modified_on")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedOn = new Date();
 }

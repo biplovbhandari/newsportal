@@ -24,12 +24,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.newsportal.model.auth.AuthUser;
-import com.newsportal.model.doc.DocImage;
-import com.newsportal.model.news.NewsComment;
 import com.newsportal.model.news.NewsPost;
 import com.newsportal.model.person.PersonProfile;
-import com.newsportal.model.person.PersonSubscription;
-import com.newsportal.model.person.PersonSubscriptionFilter;
 
 @Entity
 @Table(name = "auth_user")
@@ -49,21 +45,6 @@ public class AuthUser implements Serializable {
 	@OrderBy("id")
 	private Set<NewsPost> newsPost = new LinkedHashSet<NewsPost>();
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
-	private Set<AuthEvent> authEvent = new LinkedHashSet<AuthEvent>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
-	private Set<NewsComment> newsComment = new LinkedHashSet<NewsComment>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
-	private Set<DocImage> docImage = new LinkedHashSet<DocImage>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
-	private Set<PersonSubscription> userSubscription = new LinkedHashSet<PersonSubscription>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
-	private Set<PersonSubscriptionFilter> userSubscriptionFilter = new LinkedHashSet<PersonSubscriptionFilter>();
-	
 	/*************************************************/
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by")
@@ -74,7 +55,7 @@ public class AuthUser implements Serializable {
 	private AuthUser approvedBy;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	//@JoinColumn(name="modified_by")
+	@JoinColumn(name="modified_by")
 	private AuthUser modifiedBy;
 
 	@Id
@@ -126,15 +107,6 @@ public class AuthUser implements Serializable {
 	
 	@Column(name="api_key")
 	private String apiKey;
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
-	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
-	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
-	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
 
 	@Column(name = "uuid", unique = true)
 	private String uuid = UUID.randomUUID().toString();
@@ -193,48 +165,6 @@ public class AuthUser implements Serializable {
 	}
 
 	/**
-	 * @return the authEvent
-	 */
-	public Set<AuthEvent> getAuthEvent() {
-		return authEvent;
-	}
-
-	/**
-	 * @param authEvent the authEvent to set
-	 */
-	public void setAuthEvent(Set<AuthEvent> authEvent) {
-		this.authEvent = authEvent;
-	}
-
-	/**
-	 * @return the newsComment
-	 */
-	public Set<NewsComment> getNewsComment() {
-		return newsComment;
-	}
-
-	/**
-	 * @param newsComment the newsComment to set
-	 */
-	public void setNewsComment(Set<NewsComment> newsComment) {
-		this.newsComment = newsComment;
-	}
-
-	/**
-	 * @return the docImage
-	 */
-	public Set<DocImage> getDocImage() {
-		return docImage;
-	}
-
-	/**
-	 * @param docImage the docImage to set
-	 */
-	public void setDocImage(Set<DocImage> docImage) {
-		this.docImage = docImage;
-	}
-
-	/**
 	 * @return the profileId
 	 */
 	public PersonProfile getProfileId() {
@@ -246,34 +176,6 @@ public class AuthUser implements Serializable {
 	 */
 	public void setProfileId(PersonProfile profileId) {
 		this.profileId = profileId;
-	}
-
-	/**
-	 * @return the userSubscription
-	 */
-	public Set<PersonSubscription> getUserSubscription() {
-		return userSubscription;
-	}
-
-	/**
-	 * @param userSubscription the userSubscription to set
-	 */
-	public void setUserSubscription(Set<PersonSubscription> userSubscription) {
-		this.userSubscription = userSubscription;
-	}
-
-	/**
-	 * @return the userSubscriptionFilter
-	 */
-	public Set<PersonSubscriptionFilter> getUserSubscriptionFilter() {
-		return userSubscriptionFilter;
-	}
-
-	/**
-	 * @param userSubscriptionFilter the userSubscriptionFilter to set
-	 */
-	public void setUserSubscriptionFilter(Set<PersonSubscriptionFilter> userSubscriptionFilter) {
-		this.userSubscriptionFilter = userSubscriptionFilter;
 	}
 
 	/**
@@ -540,48 +442,6 @@ public class AuthUser implements Serializable {
 	 */
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
-	}
-
-	/**
-	 * @return the createdByUsers
-	 */
-	public Set<AuthUser> getCreatedByUsers() {
-		return createdByUsers;
-	}
-
-	/**
-	 * @param createdByUsers the createdByUsers to set
-	 */
-	public void setCreatedByUsers(Set<AuthUser> createdByUsers) {
-		this.createdByUsers = createdByUsers;
-	}
-
-	/**
-	 * @return the approvedByUsers
-	 */
-	public Set<AuthUser> getApprovedByUsers() {
-		return approvedByUsers;
-	}
-
-	/**
-	 * @param approvedByUsers the approvedByUsers to set
-	 */
-	public void setApprovedByUsers(Set<AuthUser> approvedByUsers) {
-		this.approvedByUsers = approvedByUsers;
-	}
-
-	/**
-	 * @return the modifiedByUsers
-	 */
-	public Set<AuthUser> getModifiedByUsers() {
-		return modifiedByUsers;
-	}
-
-	/**
-	 * @param modifiedByUsers the modifiedByUsers to set
-	 */
-	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
-		this.modifiedByUsers = modifiedByUsers;
 	}
 
 	/**

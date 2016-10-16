@@ -218,11 +218,14 @@ public abstract class DAO<T> {
 	public T findByParam(final Session session, final String columnName, final Object columnValue, Boolean filter) {
 		List<T> list = getListByParam(session, columnName, columnValue);
 
-		if(filter && (list.size() > 0)) {
-			return list.get(0);
-		} else {
-			return (T) list;
+		if (list.size() > 0) {
+			if (filter) {
+				return list.get(0);
+			} else {
+				return (T) list;
+			}
 		}
+		return null;
 	}
 
 	public List<T> getListByParam(final Session session, final String columnName, final Object columnValue) {

@@ -2,8 +2,6 @@ package com.newsportal.model.person;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -14,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,15 +53,6 @@ public class PersonProfile implements Serializable {
 	
 	@Column(name="contact_value", length=512)
 	private String contactValue;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
-	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
-	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
-	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
 	
 	@Column(name = "uuid", unique = true)
 	private String uuid = UUID.randomUUID().toString();
@@ -193,48 +181,6 @@ public class PersonProfile implements Serializable {
 	 */
 	public void setContactValue(String contactValue) {
 		this.contactValue = contactValue;
-	}
-
-	/**
-	 * @return the createdByUsers
-	 */
-	public Set<AuthUser> getCreatedByUsers() {
-		return createdByUsers;
-	}
-
-	/**
-	 * @param createdByUsers the createdByUsers to set
-	 */
-	public void setCreatedByUsers(Set<AuthUser> createdByUsers) {
-		this.createdByUsers = createdByUsers;
-	}
-
-	/**
-	 * @return the approvedByUsers
-	 */
-	public Set<AuthUser> getApprovedByUsers() {
-		return approvedByUsers;
-	}
-
-	/**
-	 * @param approvedByUsers the approvedByUsers to set
-	 */
-	public void setApprovedByUsers(Set<AuthUser> approvedByUsers) {
-		this.approvedByUsers = approvedByUsers;
-	}
-
-	/**
-	 * @return the modifiedByUsers
-	 */
-	public Set<AuthUser> getModifiedByUsers() {
-		return modifiedByUsers;
-	}
-
-	/**
-	 * @param modifiedByUsers the modifiedByUsers to set
-	 */
-	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
-		this.modifiedByUsers = modifiedByUsers;
 	}
 
 	/**

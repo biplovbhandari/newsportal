@@ -70,15 +70,6 @@ public class NewsComment implements Serializable {
 	@Column(name="body", columnDefinition="TEXT")
 	private String body;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
-	private Set<AuthUser> createdByUsers = new LinkedHashSet<AuthUser>();
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
-	private Set<AuthUser> approvedByUsers = new LinkedHashSet<AuthUser>();
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
-	private Set<AuthUser> modifiedByUsers = new LinkedHashSet<AuthUser>();
-	
 	@Column(name = "uuid", unique = true)
 	private String uuid = UUID.randomUUID().toString();
 	
@@ -234,48 +225,6 @@ public class NewsComment implements Serializable {
 	 */
 	public void setBody(String body) {
 		this.body = body;
-	}
-
-	/**
-	 * @return the createdByUsers
-	 */
-	public Set<AuthUser> getCreatedByUsers() {
-		return createdByUsers;
-	}
-
-	/**
-	 * @param createdByUsers the createdByUsers to set
-	 */
-	public void setCreatedByUsers(Set<AuthUser> createdByUsers) {
-		this.createdByUsers = createdByUsers;
-	}
-
-	/**
-	 * @return the approvedByUsers
-	 */
-	public Set<AuthUser> getApprovedByUsers() {
-		return approvedByUsers;
-	}
-
-	/**
-	 * @param approvedByUsers the approvedByUsers to set
-	 */
-	public void setApprovedByUsers(Set<AuthUser> approvedByUsers) {
-		this.approvedByUsers = approvedByUsers;
-	}
-
-	/**
-	 * @return the modifiedByUsers
-	 */
-	public Set<AuthUser> getModifiedByUsers() {
-		return modifiedByUsers;
-	}
-
-	/**
-	 * @param modifiedByUsers the modifiedByUsers to set
-	 */
-	public void setModifiedByUsers(Set<AuthUser> modifiedByUsers) {
-		this.modifiedByUsers = modifiedByUsers;
 	}
 
 	/**

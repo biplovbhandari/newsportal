@@ -318,13 +318,13 @@ public abstract class DAO<T> {
 		return list;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setClassFromList(Object column,Integer i){
 		ReflectHelper rh = mapClass.get(i);
 		
 		Boolean isId = rh.getIsId();
 		Object objectBean = null;
 		Class<?> clz = rh.getCls();
-		@SuppressWarnings("rawtypes")
 		Class[] paramGnrl = new Class[1];	
 		paramGnrl[0] = rh.getMethod().getReturnType();
 
@@ -398,7 +398,6 @@ public abstract class DAO<T> {
 				}
 				try{
 					if(isId){
-						@SuppressWarnings("rawtypes")
 						Class[] paramLong = new Class[1];	
 						paramLong[0] = Long.class;
 						

@@ -1,10 +1,13 @@
 package com.newsportal.controllers.services;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.newsportal.utils.LoadResult;
+import com.newsportal.utils.MapWhereQuery;
 import com.newsportal.controllers.dao.DAO;
 import com.newsportal.utils.SessionBuilder;
 
@@ -70,5 +73,35 @@ public abstract class Service<T> {
 		}
 		
 		return success;
+	}
+
+	public LoadResult<List<T>> loadData(int start, int limit,
+			String order, boolean desc, String where, Integer deepLvl, List<MapWhereQuery> listMapQuery) {
+		
+		Session session = SessionBuilder.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		
+		try{
+			tx.begin();			
+			List<T> list = dao.list(session, start, limit, order, desc, where, deepLvl, listMapQuery);
+			//prepareTransientData(session, list);
+			LoadResult<List<T>> loadResult = createLoadResult(list, list.size());
+			tx.commit();
+			return loadResult;
+		} catch (RuntimeException e) {
+			tx.rollback();
+			e.printStackTrace();
+			log.severe(e.getMessage());
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
+	// Create an instance of the LoadResult
+	public LoadResult<List<T>> createLoadResult(List<T> list, int totalLength) {
+		LoadResult<List<T>> result = new LoadResult<List<T>>(list);
+		result.setTotalRecord(totalLength);
+		return result;
 	}
 }

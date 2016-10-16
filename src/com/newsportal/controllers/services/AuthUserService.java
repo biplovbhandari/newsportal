@@ -55,4 +55,9 @@ public class AuthUserService extends Service<AuthUser>{
 		
 		return getByParam("email", email);
 	}
+	
+	public AuthUser getUserByTokenId(String tokenId) {
+
+		return getByParam("apiKey", tokenId);
+	}
 }

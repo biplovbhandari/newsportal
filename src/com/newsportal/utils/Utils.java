@@ -58,12 +58,6 @@ public class Utils {
 			
 			Class <?> classType = field.getType();
 			
-			// empty
-			//Class empty[] = {};
-			
-			// non-empty
-			//Class[] nonEmpty = new Class[1];
-			
 			if(classType.equals(String.class)){
 				fieldType = "String";
 			}

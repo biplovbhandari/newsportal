@@ -58,10 +58,10 @@ public class AuthUser implements Serializable {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
 	private Set<DocImage> docImage = new LinkedHashSet<DocImage>();
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="userId")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
 	private Set<PersonSubscription> userSubscription = new LinkedHashSet<PersonSubscription>();
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="userId")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="userId")
 	private Set<PersonSubscriptionFilter> userSubscriptionFilter = new LinkedHashSet<PersonSubscriptionFilter>();
 	
 	/*************************************************/

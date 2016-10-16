@@ -7,6 +7,7 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+import com.newsportal.controllers.resources.AuthUserResource;
 import com.newsportal.controllers.resources.HomeResource;
 
 /**
@@ -19,9 +20,20 @@ public class Newsportal extends Application{
 	public Restlet createInboundRoot() {
 		Router router = new Router();
 		router.attach("/", HomeResource.class);
+		attach(router, "/auth_user", AuthUserResource.class);
 		return router;
 	}
 
+	private void attach(Router router, String path, Class<?> clazz) {
+		
+		router.attach(path, clazz);
+		// Crud Operation
+		router.attach(path + "/create", clazz);
+		router.attach(path + "/{id}/read", clazz);
+		router.attach(path + "/{id}", clazz); // same as read
+		router.attach(path + "/{id}/update", clazz); // respond to PUT??
+		router.attach(path + "/{id}/delete", clazz);
+	}
 	
 	
 }

@@ -150,6 +150,21 @@ public class AuthUser implements Serializable {
 		this.email = email;
 	}
 
+
+	/**
+	 * List Fields
+	 */
+	//public ArrayList<String> getListFields() {
+		
+	//	return new ArrayList<String>() {{
+	//		add("firstName");
+	//	}};
+	//}
+	
+	/**
+	 * Getters and Setters
+	 */
+
 	/**
 	 * @return the newsPost
 	 */

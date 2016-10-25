@@ -3,6 +3,7 @@ package com.newsportal.controllers.dao;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,27 +81,64 @@ public abstract class DAO<T> {
 		//return (T) session.get(clazz, id);
 	}
 	
-	@SuppressWarnings("unused")
-	public String[] getQueriesFromClass(Class<?> clz,String className,Integer deepLvl){
+	@SuppressWarnings({ "unused", "unchecked" })
+	public String[] getQueriesFromClass(Class<?> clz, String className, Integer deepLvl) {
+
 		String bodyQuery = "";
 		String leftJoin = "";
-		String classNameWithoutDot = className.substring(0,className.length()-1);
-		for(Method m : clz.getDeclaredMethods()){
+		String classNameWithoutDot = className.substring(0, className.length() - 1);
+
+		// Check if listFields are present
+		Method listFieldMethod = null;
+		List<String> listFields = null;
+		String listFieldClassName = "getListFields";
+		try {
+			listFieldMethod = clz.getMethod(listFieldClassName, (Class<?>[]) null);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (listFieldMethod != null) {
+				// Get the listFields
+				try {
+					T classInstance = (T) clz.newInstance();
+					listFields = (List<String>) listFieldMethod.invoke(classInstance);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		for(Method m : clz.getDeclaredMethods()) {
 			// Ignore setters method which has return type void
-			if(!m.getReturnType().getName().equals("void")){
+			if(!(m.getReturnType().getName().equals("void") || m.getName().equals(listFieldClassName))) {
 				String getterNameMethod = m.getName();
 				String fieldName = "";
-				if(getterNameMethod.substring(0,2).equals("is")){
-					fieldName = getterNameMethod.substring(2,3).toLowerCase()+getterNameMethod.substring(3);
+				if(getterNameMethod.substring(0,2).equals("is")) {
+					fieldName = getterNameMethod.substring(2,3).toLowerCase() + 
+								getterNameMethod.substring(3);
 				}
-				else{
-					fieldName = getterNameMethod.substring(3,4).toLowerCase()+getterNameMethod.substring(4);
+				else {
+					fieldName = getterNameMethod.substring(3,4).toLowerCase() +
+								getterNameMethod.substring(4);
 				}
 				Field field = null;
 				try {
 					field = clz.getDeclaredField(fieldName);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
 				
@@ -116,11 +154,11 @@ public abstract class DAO<T> {
 					String annoName = annotation.toString();
 					
 					CharSequence cs1 = "JoinColumn";
-					if(annoName.contains(cs1)){
+					if(annoName.contains(cs1)) {
 						String[] splitColumn = annoName.split(",");
 						for(String StrSplitColumn : splitColumn){
-							cs1 = " name=";
-							if(StrSplitColumn.contains(cs1)){
+							cs1 = "name=";
+							if(StrSplitColumn.contains(cs1)) {
 								String[] splitColumn1 = StrSplitColumn.split("=");
 								columnJoinName = splitColumn1[1];
 								break;
@@ -133,16 +171,23 @@ public abstract class DAO<T> {
 					}
 				}
 				
-				if(typeStr.equals("Set")){
+				if (typeStr.equals("Set")) {
 					includeInQuery = false;
 				}
+
+				if (listFields != null){
+	
+					if (!listFields.contains(fieldName)) {
+						includeInQuery = false;
+					}	
+				}
 				
-				if(includeInQuery){
+				if(includeInQuery) {
 					ReflectHelper rh = new ReflectHelper();
 					Boolean skipSelectTbl = false;
 					if(!typeStr.equals("none")){
 						String alias = classNameWithoutDot.replaceAll("\\.", "_");
-						bodyQuery += ","+alias+"."+field.getName()+" ";
+						bodyQuery += "," + alias + "." + field.getName() + " ";
 					}
 					else{
 						Class<?> c = null;
@@ -154,12 +199,12 @@ public abstract class DAO<T> {
 							    Object object = null;
 							    Long valTemp = (long) 1;
 						    	try{
-						    		object = ctor.newInstance(new Object[] {valTemp });
+						    		object = ctor.newInstance(new Object[] {valTemp});
 						    		break;
 						    	}
 						    	catch(Exception e){
 						    		try {
-										object = ctor.newInstance(new Object[] {valTemp.toString() });
+										object = ctor.newInstance(new Object[] {valTemp.toString()});
 										break;
 									} catch (Exception e1) {
 										try {
@@ -179,7 +224,7 @@ public abstract class DAO<T> {
 						}
 			
 						Integer currLvl = className.split("\\.").length;
-						System.out.println("currLvl = "+currLvl);
+						System.out.println("currLvl = " + currLvl);
 //						String alias = classNameWithoutDot.replaceAll("\\.", "_");
 //						alias = alias+"_"+field.getName();
 //						leftJoin += "left join "+className+field.getName()+" "+alias+" ";
@@ -190,17 +235,17 @@ public abstract class DAO<T> {
 						}
 						else{
 							String alias = classNameWithoutDot.replaceAll("\\.", "_");
-							alias = alias+"_"+field.getName();
-							leftJoin += "left join "+className+field.getName()+" "+alias+" ";
+							alias = alias + "_" + field.getName();
+							leftJoin += "left join " + className + field.getName() + " " + alias + " ";
 							
-							String[] queryStrArr = getQueriesFromClass(c,className+field.getName()+".",deepLvl);
+							String[] queryStrArr = getQueriesFromClass(c, className + field.getName() + ".", deepLvl);
 							bodyQuery += queryStrArr[0];
 							leftJoin += queryStrArr[1];
 							skipSelectTbl = true;
 						}
-						System.out.println("join = "+leftJoin);
+						System.out.println("join = " + leftJoin);
 					}
-					if(!skipSelectTbl){
+					if(!skipSelectTbl) {
 						rh.setFieldName(field.getName());
 						rh.setField(field);
 						rh.setMethod(m);
@@ -250,7 +295,7 @@ public abstract class DAO<T> {
 		leftJoin = strQueryAll[1];
 
 		String qStr = "select " + bodyQuery.substring(1);
-		qStr += " from " + clazz.getName() + " as bean " + leftJoin + " "; //bean.role.id as id0,
+		qStr += " from " + clazz.getName() + " as bean " + leftJoin + " ";
 		qStr += where;
 		if (order != null) {
 			qStr += " order by bean." + order;

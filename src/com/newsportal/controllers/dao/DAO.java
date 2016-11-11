@@ -96,7 +96,7 @@ public abstract class DAO<T> {
 			listFieldMethod = clz.getMethod(listFieldClassName, (Class<?>[]) null);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("There is no list field method defined for " + clz.toString());
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -479,10 +479,10 @@ public abstract class DAO<T> {
 					String getterNameMethod = m.getName();
 					String fieldName = "";
 					if(getterNameMethod.substring(0,2).equals("is")){
-						fieldName = getterNameMethod.substring(2,3).toLowerCase()+getterNameMethod.substring(3);
+						fieldName = getterNameMethod.substring(2, 3).toLowerCase() + getterNameMethod.substring(3);
 					}
 					else{
-						fieldName = getterNameMethod.substring(3,4).toLowerCase()+getterNameMethod.substring(4);
+						fieldName = getterNameMethod.substring(3, 4).toLowerCase() + getterNameMethod.substring(4);
 					}
 					Field field = null;
 					try {
@@ -503,15 +503,32 @@ public abstract class DAO<T> {
 
 						try {
 							c = Class.forName(paramGnrl[0].getName());
-							Constructor<?> ctor = c.getConstructors()[0];
+							Constructor<?> ctor = null;
+							try {
+								ctor = c.getConstructor(Long.class);
+							} catch (Exception e1) {
+								try {
+									ctor = c.getConstructor(String.class);
+								} catch (Exception e2) {
+									try {
+										ctor = c.getConstructor();
+									} catch (NoSuchMethodException e) {
+										// TODO Auto-generated catch block
+										System.out.println("No constructors defined for " + c.toString());
+									} catch (SecurityException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+							
 						    
 						    Long valTemp = (long) 1;
-					    	try{
-					    		object = ctor.newInstance(new Object[] {valTemp });
-					    	}
-					    	catch(Exception e){
+					    	try {
+					    		object = ctor.newInstance(new Object[] {valTemp});
+					    	} catch (Exception e) {
 					    		try {
-									object = ctor.newInstance(new Object[] {valTemp.toString() });
+									object = ctor.newInstance(new Object[] {valTemp.toString()});
 								} catch (Exception e1) {
 									try {
 										object = ctor.newInstance(new Object[] {});

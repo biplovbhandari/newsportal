@@ -1,8 +1,11 @@
 package com.newsportal.controllers.resources;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.data.Form;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -11,8 +14,10 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
 import com.newsportal.controllers.services.Service;
+import com.newsportal.model.auth.AuthUser;
 import com.newsportal.utils.LoadResult;
 import com.newsportal.utils.MapWhereQuery;
+import com.newsportal.utils.Utils;
 
 public abstract class Resource<T> extends FirstRun {
 
@@ -21,6 +26,7 @@ public abstract class Resource<T> extends FirstRun {
 	protected String order = "id";
 	protected boolean desc = false;
 	protected List<MapWhereQuery> listMapQuery = new ArrayList<MapWhereQuery>();
+	protected ObjectMapper mapper = new ObjectMapper();
 	protected Integer deepLvl = 1;
 	protected Service<T> service;
 	protected Class<T> clazz;
@@ -58,27 +64,21 @@ public abstract class Resource<T> extends FirstRun {
 
 	/* for hiding sensitive data like pwd etc */
 	/* override this in subclasses to implement */
-	protected void hideSensitiveData(T bean) {
-		
-	}
+	protected void hideSensitiveData(T bean) {}
 
 	@Get("json")
-	public Representation toJson() {
+	public Representation read() {
 
 		Representation representation = null;
 		LoadResult<List<T>> loadResult = null;
-		
-		try {
-			
+		try {			
 			if (id != null) {
-				
 				T bean = service.getByParam("id", id);
 				if (bean != null) {
 					hideSensitiveData(bean);
 				}
 				representation = new JacksonRepresentation<T>(bean);
 			} else {
-			
 				String whereClause = "";
 				
 				//checkUserPermission();
@@ -94,4 +94,59 @@ public abstract class Resource<T> extends FirstRun {
 		}
 		return representation;
 	}
+	
+	protected void addMetaDataCreate(T bean) {
+		
+		Date today = new Date();
+		try {
+			// Created By
+			Method createdByMethod = clazz.getMethod(Utils.getSetterMethodName("createdBy"), AuthUser.class);
+			createdByMethod.invoke(bean, currentUser);
+			
+			// Created On
+			Method createdOnMethod = clazz.getMethod(Utils.getSetterMethodName("createdOn"), Date.class);
+			createdOnMethod.invoke(bean, today);
+			
+			// Modified By
+			Method modifiedByMethod = clazz.getMethod(Utils.getSetterMethodName("modifiedBy"), AuthUser.class);
+			modifiedByMethod.invoke(bean, currentUser);
+			
+			// Modified On
+			Method modifiedOnMethod = clazz.getMethod(Utils.getSetterMethodName("modifiedOn"), Date.class);
+			modifiedOnMethod.invoke(bean, today);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	protected void addMetaDataUpdate(T bean) {
+		
+		Date today = new Date();
+		try {
+			
+			// Modified By
+			Method modifiedByMethod = clazz.getMethod(Utils.getSetterMethodName("modifiedBy"), AuthUser.class);
+			modifiedByMethod.invoke(bean, currentUser);
+			
+			// Modified On
+			Method modifiedOnMethod = clazz.getMethod(Utils.getSetterMethodName("modifiedOn"), Date.class);
+			modifiedOnMethod.invoke(bean, today);
+
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	//protected void logUserActivity()
+	
 }
